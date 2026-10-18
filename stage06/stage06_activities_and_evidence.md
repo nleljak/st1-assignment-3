@@ -3,7 +3,7 @@
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
 - Group/tutorial: Tuesday 17:30
-- Members, GitHub usernames and cohorts: Kynan and Nikola, kcsch and nleljak
+- Members, GitHub usernames and cohorts: Kynan and Nikola, kcsch and nleljak, Tuesday 17:30
 - Repository URL: https://github.com/nleljak/st1-assignment-3.git 
 - Starting SHA: [response]
 
