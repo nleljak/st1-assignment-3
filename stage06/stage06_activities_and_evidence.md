@@ -170,23 +170,23 @@ Other developers examine the code changes before they are implemented into the p
 
 6. What does a Git diff show?
 
-[response]
+Shows the differences between versions of files, highlighting lines of code that have been added, modified or removed. Along with helping developers review changes, identify mistakes and understand what a commit contains. 
 
 7. What is a Definition of Done?
 
-[response]
+A set of agreed criteria by the developers that must be met before a task is considered complete. 
 
 8. What is the appropriate role of GitHub Copilot in pull-request review?
 
-[response]
+It should be used as an assistant and not a direct developer or as a replacement for human judgement. It may help identify bugs, security concerns, logic errors or improvement to code quality, all of which need to be verified by a human.
 
 9. Why should individual contribution not be judged only by commit count?
 
-[response]
+As commits vary in complexity, quality and impact. Someone may make fewer commits but have more heavy features, fix more complex bugs or review other member's code. Contribution should instead be assessed using evidence of the quality, significance and effectiveness of each person’s work.
 
 10. What is the Stage 6 engineering rule?
 
-[response]
+Make small traceable changes, test the code, review the changes and record genuine evidence of that work. 
 
 ## M Completion and handover
 
