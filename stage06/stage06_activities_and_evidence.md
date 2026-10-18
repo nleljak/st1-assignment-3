@@ -2,9 +2,9 @@
 
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
-- Group/tutorial: [response]
-- Members, GitHub usernames and cohorts: [response]
-- Repository URL: [response]
+- Group/tutorial: Tuesday 17:30
+- Members, GitHub usernames and cohorts: Kynan and Nikola, kcsch and nleljak
+- Repository URL: https://github.com/nleljak/st1-assignment-3.git 
 - Starting SHA: [response]
 
 ## A Requirement to issue activities
@@ -144,29 +144,29 @@ Repeat per member. Include only categories that describe actual work; write not 
 
 Why is a high commit count not necessarily evidence of strong contribution?
 
-[response]
+As the number of commits measures activity and not the quality or complexity of the work completed.
 
 ## L Stage 6 formative questions
 
 1. What is version control?
 
-[response]
+It is a system that tracks the changes made to files over time, allow for the developers to record, review and revert changes and collaborate with other people without overwriting work. 
 
 2. Why is a feature branch useful?
 
-[response]
+It allows a developer to work on a new feature or fix the main code separately. Preventing unfinished or faulty changes from affecting the main project and allowing for changes to be tested before being merged. 
 
 3. What makes a commit a good engineering commit?
 
-[response]
+It is small, focused and self-contained and is clear and easy to understand. They are also easy to review and revert if needed, making the project easier to maintain and collaborate on. 
 
 4. What is a pull request?
 
-[response]
+It's a request to merge changes from one branch to another into another branch. Allowing team members to review the code, discuss improvements, identify bugs and run tests before the changes are merged. 
 
 5. What is the purpose of code review?
 
-[response]
+Other developers examine the code changes before they are implemented into the program. Helping identify bugs, improve code quality, check requirements are met and ensure the coding standards are followed. 
 
 6. What does a Git diff show?
 
