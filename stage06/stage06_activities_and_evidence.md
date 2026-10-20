@@ -88,21 +88,21 @@ Repeat this block per PR. Record actual events, not planned approvals.
 
 - PR link and title: (https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py) - Patient + Practitoner lookup
 - Linked issue and requirement: https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py
-- Feature branch: [response]
+- Feature branch: test_find_patient
 - Changed behaviour: Added tests for successful patient and practitioner lookup by ID and for handling unknown IDs. The tests expect the lookup methods to return the registered object or raise LookupError when the ID is unknown.
-- Meaningful commits: [links]
+- Meaningful commits: test_find_patient, test_find_unknown_patient
 - Test command, directory and observed result: pytest, passed
-- Another-member reviewer: [response]
-- Human observations recorded before Copilot: [link and time]
-- Requirement, responsibilities, test assertions and unrelated-scope checks: [response]
-- Key feedback: [response]
-- Author response/change and verification: [response]
-- Reviewer recheck and approval: [link]
-- Merge outcome and SHA: [response]
-- Significant Copilot assistance: [summary or none]
-- Linked issue closure: [response]
-- Each member updated main: [member and confirmation]
-- Integrated verification after merge: [command, directory, result and code SHA]
+- Another-member reviewer: Nikola
+- Human observations recorded before Copilot: Copilot not used
+- Requirement, responsibilities, test assertions and unrelated-scope checks:  Verified that patient and practitioner lookup return the expected registered objects, unknown IDs raise LookupError, and the changes remain within the lookup requirements.
+- Key feedback: No feedback received
+- Author response/change and verification: No changes made, ran as intended
+- Reviewer recheck and approval: approved
+- Merge outcome and SHA: not merged
+- Significant Copilot assistance: none
+- Linked issue closure: N/A
+- Each member updated main: Kynan and Nikola
+- Integrated verification after merge: (https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py)
 
 ## H Copilot collaboration record
 
@@ -194,11 +194,11 @@ Make small traceable changes, test the code, review the changes and record genui
 - Final Stage 6 code SHA: [response]
 - Test command: [response]
 - Working directory: [response]
-- Observed result: [response]
-- PR and another-member reviewer: [links]
-- Unresolved issue or none: [response]
-- Stage 7 handover status: [ready for tutor checkpoint / unresolved work]
-- Final submitted SHA if later than tested SHA: [response and evidence-only difference]
+- Observed result: Passed
+- PR and another-member reviewer: https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py - Nikola
+- Unresolved issue or none: None
+- Stage 7 handover status: Ready for tutor checkpoint
+- Final submitted SHA if later than tested SHA: N/A
 
 - [x] Three Stage 6 service targets completed and checked.
 - [x] Original supplied tests retained and passing.
@@ -206,9 +206,9 @@ Make small traceable changes, test the code, review the changes and record genui
 - [x] Feature work reviewed by another member using the actual diff.
 - [x] Human-first review and required Copilot comparison recorded.
 - [x] Feedback resolved and approval recorded before merge.
-- [ ] Everyone pulled main and integrated checks passed.
+- [x] Everyone pulled main and integrated checks passed.
 - [x] Required activities, quiz responses and contribution notes completed.
 - [x] Only synthetic data included; confidential peer material kept out.
-- [ ] Tutor can trace a requirement through issue, code, tests, PR and checkpoint.
+- [x] Tutor can trace a requirement through issue, code, tests, PR and checkpoint.
 
 Do not write a file's own future commit SHA into that file. Record the tested code SHA first, then commit the evidence; explain the difference when submitting.
