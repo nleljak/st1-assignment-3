@@ -1,3 +1,5 @@
+#Stage 6
+
 """Checks of supplied foundation only; assessed TODOs are not called."""
 
 from datetime import datetime
@@ -115,7 +117,6 @@ def test_unregistered_participants_rejected() -> None:
         )
     assert data_store.list_appointments() == []
 
-
 def test_conflict_rule_and_different_practitioner() -> None:
     """Verify conflict rule and different practitioner."""
     data_store, _, _, appointment_service = foundation()
@@ -149,3 +150,32 @@ def test_domain_cancellation_and_guard() -> None:
     with pytest.raises(ValueError):
         appointment.cancel()
     assert appointment.status is AppointmentStatus.CANCELLED
+
+#Stage 6 - Patient lookup
+def test_find_patient():
+    data_store, patient, _, _ = foundation()
+    service = PatientService(data_store)
+    assert service.find_patient("P1") is patient
+
+
+def test_find_unknown_patient():
+    data_store, _, _, _ = foundation()
+    service = PatientService(data_store)
+
+    with pytest.raises(LookupError):
+        service.find_patient("UNKNOWN")
+
+#stage 6 - Practitioner lookup
+def test_find_practitioner():
+    data_store, _, practitioner, _ = foundation()
+    service = PractitionerService(data_store)
+
+    assert service.find_practitioner("D1") is practitioner
+
+
+def test_find_unknown_practitioner():
+    data_store, _, _, _ = foundation()
+    service = PractitionerService(data_store)
+
+    with pytest.raises(LookupError):
+        service.find_practitioner("UNKNOWN")
