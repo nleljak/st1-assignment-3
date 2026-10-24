@@ -66,7 +66,10 @@ Assign TEST IDs before implementation or generation. Use canonical AC IDs with t
 
 | Requirement | Acceptance criterion | Test ID | Test type | Test name / location | Expected behaviour | Result / observed status | Supplied or student-authored |
 |---|---|---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| FR-01 Register patient | AC-01.1 | Test-01 | Positive — service | Patient registration test — tests/test_services.py | Valid patient details and a unique ID result in a patient being stored. | Not yet verified | Student Authorised |
+| FR-05 Prevent practitioner conflict | AC-04.1 | Test-02| Negative — service | test_conflict_rule_and_different_practitioner — tests/test_services.py | Rejects a second scheduled appointment for the same practitioner at the exact same time. | Verified | Supplied from stage 6 |
+| FR-06 Cancel appointment | AC-05.1 | Test-03 | Positive — domain | test_domain_cancellation_and_guard — existing Stage 6 test file | Cancelling a scheduled appointment changes its status to CANCELLED. | Verified | Supplied from stage 6 |
+| FR-07 Retain cancelled history | AC-05.2 | Test-04 | Positive — service | Cancellation/history test — tests/test_services.py | A cancelled appointment remains retrievable during the current session. | Verified | Supplied from stage 6 |
 
 ## C Test Design
 
