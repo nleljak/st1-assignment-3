@@ -1,6 +1,6 @@
 # Stage 7 Testing and Verification Record
 
-Group/tutorial: [complete]  Members/cohorts: [complete]
+Group/tutorial: Online Group 2, Tuesday 17:30 Members/cohorts: Nikola, Kynan UG
 Requirements baseline: SmartCare A3 Requirements Baseline 2026, revision 2.
 Use the same project/. Link actual evidence; keep responses concise. Blank fields are for your group. Copy rows only as needed.
 
@@ -14,29 +14,29 @@ For each requirement, propose one positive test, one negative test and the key a
 
 | Requirement | Positive test | Negative test | Key assertion |
 |---|---|---|---|
-| FR-01 Register patient | [response] | [response] | [response] |
-| FR-05 Prevent practitioner conflict | [response] | [response] | [response] |
-| FR-06 Cancel appointment | [response] | [response] | [response] |
-| FR-07 Retain cancelled history | [response] | [response] | [response] |
+| FR-01 Register patient | Register a patient with a valid and unused ID. | Unsuccessful registration of a patient via a patient ID | Positive: The registered patient can be retrieved from the data store and the stored patient has the expected ID and details. Negative: A ValueError is raised and the original patient record remains unchanged. |
+| FR-05 Prevent practitioner conflict | Book appointments for two different practitioners at the same time and day. | Unsuccessful booking of two different practitioners at the time and date. | Positive: Both appointments are accepted and associated with their respective practitioners. Negative: A ValueError is raised, and the rejected appointment is not added to the data store. |
+| FR-06 Cancel appointment | Appointment was successfully removed from the appointment schedule | Appointment was unsuccessfully removed from the appointment schedule | Positive: The appointment's status changes to CANCELLED. Negative: A ValueError is raised, and the appointment remains CANCELLED. |
+| FR-07 Retain cancelled history | Cancel an appointment, then retrieve it by its ID or list the appointments. | Attempt to retrieve a genuinely unknown appointment ID. | Positive: The cancelled appointment remains retrievable, with its status still CANCELLED. Negative: The service lookup raises a LookupError for an unknown appointment ID. |
 
 ### Activity 2 Strong or weak assertion
 
 For each, select Strong for stated behaviour or Weak/unclear and explain why. State the behaviour and limits.
 
 `assert True`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Weak  Why: This always passes, regardless of whether the software behaves correctly. It does not verify any requirement or expected outcome.
 
 `assert appointment is not None`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Weak Why: This only checks that an appointment object exists. It does not establish that it belongs to the correct patient or practitioner, has the correct date and time, or has the expected status.
 
 `assert appointment.status == AppointmentStatus.CANCELLED`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Strong  Why: This checks the specific observable outcome of cancellation: the appointment status is Cancelled. It does not, by itself, prove that the appointment remains retrievable from the data store.
 
 `assert len(results) > 0`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Weak  Why: This only checks that a collection contains at least one result. It does not prove that the correct appointment is present or that cancelled appointments are retained.
 
 `assert data_store.find_appointment('A1') is appointment`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Strong  Why: This checks that looking up appointment A1 returns the exact expected appointment object. It supports the requirement that the appointment remains retrievable, but does not by itself prove that its status is Cancel.
 
 ### Activity 3 Boundary thinking
 
@@ -49,16 +49,16 @@ GitHub Copilot generates five tests, all of which pass. Two only assert that obj
 
 | Candidate | What is wrong | Rewritten test intention |
 |---|---|---|
-| 1 | [response] | [response] |
-| 2 | [response] | [response] |
-| 3 | [response] | [response] |
-| 4 | [response] | [response] |
-| 5 | [response] | [response] |
+| 1 | Checks appointment is not None | Only proves an object exists; it does not prove the appointment was booked correctly. | Book an appointment with registered participants and assert that it has the expected ID, patient, practitioner and SCHEDULED status, and is stored in the data store.
+| 2 | Checks another object is not None | Does not establish that the correct patient or practitioner was returned. | Register a patient, look them up using their ID, and assert that the returned object is the same patient that was registered.
+| 3 | Uses assert True | Always passes, even if the required behaviour is broken. | Attempt to cancel a scheduled appointment and assert that its status changes to CANCELLED.
+| 4 | Assumes an SMS notification is sent after booking | SMS notifications are not part of the stated requirements, so this test invents functionality. | After booking, assert that the appointment is stored and has the correct details and status.
+| 5 | Assumes an SMS notification is sent after cancellation | SMS notifications are not part of the stated requirements, so this test does not verify the required cancellation behaviour. | Cancel a scheduled appointment and assert that it becomes CANCELLED and remains retrievable in the data store.
 
 ### Tutorial exit question
 
 Why can 100% code coverage coexist with poor software verification?
-[response]
+Code coverage measures which lines or branches of code are executed and not whether the tests correctly verify the needed behaviour. A test might execute a cancellation function but only use assert True. The code is covered, but the test does not prove that the appointment was actually cancelled.
 
 ## B Requirement to Test Traceability Matrix
 
