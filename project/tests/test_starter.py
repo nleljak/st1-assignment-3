@@ -179,3 +179,124 @@ def test_find_unknown_practitioner():
 
     with pytest.raises(LookupError):
         service.find_practitioner("UNKNOWN")
+
+# Stage 7 Part C: Domain model tests
+from smartcare.domain import (
+    Appointment,
+    AppointmentStatus,
+    Patient,
+    Practitioner)
+
+
+# TEST-C01: Patient construction stores valid values
+def test_patient_construction():
+    patient = Patient("P1", "Alex Example")
+
+    assert patient.patient_id == "P1"
+    assert patient.name == "Alex Example"
+
+
+# TEST-C02: Blank patient ID is rejected
+def test_patient_blank_id_rejected():
+    with pytest.raises(ValueError):
+        Patient(" ", "Alex Example")
+
+
+# TEST-C03: Whitespace-only patient name is rejected
+def test_patient_blank_name_rejected():
+    with pytest.raises(ValueError):
+        Patient("P1", "   ")
+
+
+# TEST-C04: Practitioner construction stores valid values
+def test_practitioner_construction():
+    practitioner = Practitioner("D1", "Taylor Example", "General")
+
+    assert practitioner.practitioner_id == "D1"
+    assert practitioner.name == "Taylor Example"
+    assert practitioner.specialty == "General"
+
+
+# TEST-C05: Blank practitioner ID is rejected
+def test_practitioner_blank_id_rejected():
+    with pytest.raises(ValueError):
+        Practitioner(" ", "Taylor Example", "General")
+
+
+# TEST-C06: Whitespace-only practitioner name is rejected
+def test_practitioner_blank_name_rejected():
+    with pytest.raises(ValueError):
+        Practitioner("D1", "   ", "General")
+
+
+# TEST-C07: Whitespace-only practitioner specialty is rejected
+def test_practitioner_blank_specialty_rejected():
+    with pytest.raises(ValueError):
+        Practitioner("D1", "Taylor Example", "   ")
+
+
+# TEST-C08: Appointment construction stores valid values
+def test_appointment_construction():
+    patient = Patient("P1", "Alex Example")
+    practitioner = Practitioner("D1", "Taylor Example", "General")
+    appointment_time = datetime(2026, 10, 1, 9, 0)
+
+    appointment = Appointment(
+        "A1", patient, practitioner, appointment_time
+    )
+
+    assert appointment.appointment_id == "A1"
+    assert appointment.patient is patient
+    assert appointment.practitioner is practitioner
+    assert appointment.date_time == appointment_time
+
+
+# TEST-C09: New appointment starts as SCHEDULED
+def test_new_appointment_starts_scheduled():
+    patient = Patient("P1", "Alex Example")
+    practitioner = Practitioner("D1", "Taylor Example", "General")
+
+    appointment = Appointment(
+        "A1",
+        patient,
+        practitioner,
+        datetime(2026, 10, 1, 9, 0),
+    )
+
+    assert appointment.status is AppointmentStatus.SCHEDULED
+
+
+# TEST-C10: Cancelling an appointment changes its status
+def test_cancellation_changes_status():
+    patient = Patient("P1", "Alex Example")
+    practitioner = Practitioner("D1", "Taylor Example", "General")
+
+    appointment = Appointment(
+        "A1",
+        patient,
+        practitioner,
+        datetime(2026, 10, 1, 9, 0))
+
+    appointment.cancel()
+
+    assert appointment.status is AppointmentStatus.CANCELLED
+
+
+# TEST-C11: Repeated cancellation is rejected
+def test_repeated_cancellation_rejected():
+    patient = Patient("P1", "Alex Example")
+    practitioner = Practitioner("D1", "Taylor Example", "General")
+
+    appointment = Appointment(
+        "A1",
+        patient,
+        practitioner,
+        datetime(2026, 10, 1, 9, 0))
+
+    appointment.cancel()
+
+    with pytest.raises(ValueError):
+        appointment.cancel()
+
+    assert appointment.status is AppointmentStatus.CANCELLED
+
