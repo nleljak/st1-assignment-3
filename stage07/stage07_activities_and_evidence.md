@@ -77,7 +77,16 @@ Use descriptive test names such as test_cancel_changes_status() or test_blank_pa
 
 | Test ID | Requirement | Acceptance criterion | Positive / Negative / Boundary | Test intention | Observable result expected | Added evidence beyond supplied tests |
 |---|---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| Test-C01 | Patient construction | Supporting domain contract | positive | test_patient_construction() | Valid patient ID and name are stored correctly. | Verifies stored field values, not just successful construction. |
+| Test-C02 | Patient validation | Blank-ID validation contract | Negative | test_patient_blank_id_rejected() | Blank patient ID raises ValueError. | Preserves the required reference-test intention; adds a descriptive test name. |
+| Test-C03 | Patient validation | Required-name validation contract | Boundary | test_patient_blank_name_rejected() | Whitespace-only patient name raises ValueError. | Adds explicit coverage of whitespace-only names. |
+| Test-C04 | Practitioner construction | Supporting domain contract | Positive | test_practitioner_construction() | Practitioner ID, name and specialty are stored correctly. | Verifies all required practitioner fields. |
+| Test-C05 | Practitioner validation | Blank-ID validation contract | Negative | test_practitioner_blank_id_rejected() | Blank practitioner ID raises ValueError. | Adds explicit practitioner ID validation coverage. |
+| Test-C06 | Practitioner validation | Required-name validation contract | Boundary | test_practitioner_blank_name_rejected() | Whitespace-only practitioner name raises ValueError. | Adds explicit whitespace-only name validation coverage. |
+| Test-C07 | Practitioner validation | Required-specialty validation contract | Boundary | test_practitioner_blank_specialty_rejected() | Whitespace-only specialty raises ValueError. | Adds explicit specialty validation coverage. |
+| Test-C08 | Appointment construction | Supporting domain contract | Positive | test_appointment_construction() | Appointment ID, patient, practitioner and date/time match the supplied values.] | Verifies appointment fields and that the actual participant objects are retained. |
+| Test-C09 | Appointment status | AC-05.1 is not applicable to initial status; supporting domain contract | Positive | test_new_appointment_starts_scheduled() | A new appointment has status AppointmentStatus.SCHEDULED. | Preserves the required reference-test intention. |
+| Test-C10 | Appointment cancellation | AC-05.1 | Positive | test_cancellation_changes_status() | Cancelling a scheduled appointment changes its status to CANCELLED. | Preserves the cancellation reference-test intention with an explicit status assertion. |
 
 ## D Arrange Act Assert Record
 
@@ -85,7 +94,11 @@ Arrange test data; act on one meaningful behaviour; assert the required observab
 
 | Test ID | Arrange | Act | Assert | Why meaningful / why assertion proves criterion |
 |---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] |
+| Test-D01 | Create a fresh data store and PatientService. | Register patient "P1" with name "Alex Example". | Assert the patient can be retrieved and is the same object returned by registration. | Proves successful patient registration stores the correct patient. |
+| Test-D03 | Register patient "P1" and create a PatientService. | Look up "P1", then look up "UNKNOWN". | Assert the first lookup returns the registered patient and the second raises LookupError. | Proves both successful and unsuccessful patient lookups behave correctly. |
+| Test-D04 | Create a fresh data store and PractitionerService. | Register practitioner "D1", then attempt to register another practitioner with ID "D1". | Assert the original practitioner is retrievable; use pytest.raises(ValueError) for the duplicate and verify the original details remain unchanged. | Proves practitioner registration works and duplicate IDs are rejected safely. |
+| Test-D07 | Register a patient and two practitioners. Book "A1" with practitioner "D1" at a specific time. | Attempt another booking with "D1" at that time, then book with "D2" at the same time. | Assert the conflicting booking raises ValueError, the original remains unchanged, and the different-practitioner booking succeeds. | Proves the conflict rule rejects same-practitioner clashes without blocking valid bookings with another practitioner. |
+| Test-D09 | Book appointment "A1" and retain its ID. | Cancel it, retrieve it again, and attempt to cancel it a second time. | Assert its status becomes CANCELLED, it remains retrievable, and repeated cancellation raises ValueError without changing its status. | Proves cancellation, appointment history retention and rejection of repeated cancellation. |
 
 ## E Domain Test Evidence
 
