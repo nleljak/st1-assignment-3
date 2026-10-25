@@ -106,7 +106,10 @@ Cover Patient/Practitioner construction and validation; Appointment construction
 
 | Test ID | Behaviour | Test file/function | Result |
 |---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] |
+| Test-C01 | test_domain.py / test_patient_construction | [complete] | [complete] |
+| Test-C02 | test_domain.py / test_patient_blank_id_rejected | [complete] | [complete] |
+| Test-D01 | test_services.py / patient registration test | [complete] | [complete] |
+| Test-D05 | test_services.py / appointment booking test | [complete] | [complete] |
 
 ## F Service Test Evidence
 
@@ -114,7 +117,17 @@ Use fresh shared SmartCareDataStore state, registered objects and completed Stag
 
 | Test ID | Behaviour | Requirement / criterion | Test file/function | Result |
 |---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] |
+| Test-F01 | Register a patient and verify the patient is stored. | AC-01.1 — valid patient data with an unused ID is stored. | test_services.py / patient registration test — confirm function name | [complete] |
+| Test-F02 | Reject duplicate patient registration and preserve the original patient. | AC-01.2 — duplicate patient ID rejected. | test_services.py / test_duplicate_patient_preserves_original() if present | [complete] |
+| Test-F03 | Find a registered patient. | AC-02.1 — registered patient lookup succeeds. | test_domain.py or test_services.py / test_find_patient() | [complete] |
+| Test-F04 | Reject lookup of an unknown patient. | AC-02.2 — unknown patient lookup is rejected. | test_domain.py or test_services.py / test_find_unknown_patient() | [complete] |
+| Test-F05 | Register a practitioner and verify the practitioner is stored. | Practitioner registration requirement — confirm the exact criterion in your handout. | test_services.py / practitioner registration test — confirm function name | [complete] |
+| Test-F06 | Reject duplicate practitioner registration and preserve the original. | Practitioner duplicate-ID requirement — confirm the exact criterion in your handout. | test_services.py / test_duplicate_practitioner_preserves_original() if present | [complete] |
+| Test-F07 | Book an appointment with registered participants and verify its scheduled status. | AC-03.1 — appointment is stored with scheduled status. | test_services.py / test_registration_and_booking() if present | [complete] |
+| Test-F08 | Reject booking with an unknown participant without storing an appointment. | AC-03.2 — unknown participant rejected. | test_services.py / test_unregistered_participants_rejected() if present | [complete] |
+| Test-F09 | Reject a conflicting booking but allow another practitioner at the same time. | AC-04.1 / AC-04.2 — same-practitioner conflict rejected; different practitioner allowed. | test_services.py / test_conflict_rule_and_different_practitioner() if present | [complete] |
+| Test-F10 | Cancel an appointment and verify its cancelled status and retained history; reject repeated cancellation. | AC-05.1 / AC-05.2 / AC-05.3 — cancellation, history retention and repeated-cancellation rejection. | test_services.py / cancellation test — confirm function name | [complete] |
+| Test-F11 | Retrieve an appointment by ID. | AC-06.1 — known appointment lookup succeeds. | test_services.py / appointment lookup test — confirm function name | [complete] |
 
 ## G Negative and Boundary Cases
 
@@ -122,37 +135,43 @@ Connect cases to actual contracts and verify unchanged state after rejection.
 
 | Behaviour | Boundary/invalid input | Expected result | Test ID |
 |---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] |
+| Reject blank patient ID/Name | Patient ID/Name is " " | ValueError is raised; no patient is registered. | Test-C02 |
+| Reject blank practitioner specialty | Specialty is "   " | ValueError is raised | Test-C07 |
+| Reject duplicate patient registration | Register "P1", then register another patient with ID "P1" | ValueError is raised; original patient remains stored with the original details. | Test-D02 |
+| Reject unknown patient lookup | Search for patient ID "UNKNOWN" | LookupError is raised. | Test-D03 |
+| Reject booking with an unknown participant | Attempt to book using an unregistered patient ID | LookupError is raised; no appointment is stored. | Test-D06 |
+| Reject conflicting appointment | Book two appointments with the same practitioner at the exact same time | ValueError is raised; original appointment remains unchanged. | test-D07 |
+| Reject repeated cancellation | Cancel an appointment, then cancel it again | ValueError is raised; status remains CANCELLED. | test-D09 |
 
 ## H GitHub Copilot Test Design
 
 Select ONE real acceptance criterion. Complete human-first fields before using Copilot. Do not require an accepted generated test.
 
-Requirement: [complete]
-Acceptance criterion: [quote]
-Behaviour to test: [complete]
-Human-first test idea/categories: [complete]
-Prompt and purpose: [complete or link]
+Requirement: Appointment booking must prevent conflicting appointments for the same practitioner.
+Acceptance criterion: AC-04.1 — A booking for the same practitioner at the exact time as an existing scheduled appointment is rejected.
+Behaviour to test: The service must reject a second appointment with the same practitioner at the same date and time, while preserving the original appointment.
+Human-first test idea/categories: Book an appointment with a registered patient and practitioner at an available time. Check that the appointment is stored and has AppointmentStatus.SCHEDULED.
+Prompt and purpose: (https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py)
 
 For each significant candidate, copy this entry as needed:
-- Copilot test idea/candidate: [complete]
-- What it claims to verify: [complete]
-- Requirement trace: [complete]
-- Assertion quality: [complete]
-- Human critique: [complete]
-- Decision: [Accept / Modify / Reject]
-- Reason: [complete]
-- Final test reference if accepted/modified: [link or not retained]
-- Actual verification result: [complete; do not claim an unrun test passed]
+- Copilot test idea/candidate: Create an appointment, then attempt a second booking with the same practitioner at the same time. Expect ValueError.
+- What it claims to verify: Conflicting appointments for the same practitioner are rejected.
+- Requirement trace: AC-04.1 — same-practitioner, same-time booking is rejected.
+- Assertion quality: Checking pytest.raises(ValueError) verifies rejection, but by itself does not prove that the original appointment remains unchanged.
+- Human critique: The candidate is relevant, but it needs an additional assertion to verify that the original booking is still stored and its details have not changed.
+- Decision: Accept
+- Reason: The test should verifies the existing state.
+- Final test reference if accepted/modified: project/tests/test_services.py / test_conflict_rule_and_different_practitioner() (if this existing test covers the behaviour).
+- Actual verification result: Not run as part of this illustrative example.
 
 Before accepting: traces to a requirement/criterion; can fail for the right reason; assertion checks required behaviour; no invented business rule; no unnecessary private implementation dependence. Reject/modify weak assertions, invented requirements, excessive mocking, duplicates, wrong exceptions, obsolete architecture and unnecessary dependencies.
 
 ## I Weak Copilot Test Reflection
 
-Which Copilot-generated test looked convincing but was weak? [response]
-Why was it weak? [response]
-How did you strengthen it? [response]
-Accepted / modified / rejected test decisions and evidence: [link actual decisions in H]
+Which Copilot-generated test looked convincing but was weak? The test that attempted to book a second appointment with the same practitioner at the same time and checked that ValueError was raised.
+Why was it weak? The test checked that the conflicting booking was rejected, but it did not verify that the original appointment remained stored and unchanged. Therefore, it did not provide sufficient evidence that the rejected operation preserved the existing data.
+How did you strengthen it? I strengthened the test by checking that ValueError was raised when the conflicting booking was attempted, then asserting that the original appointment remained retrievable and that its date, time and status were unchanged. These assertions verify both the rejection and the preservation of the original appointment.
+Accepted / modified / rejected test decisions and evidence: I strengthened the test by checking that ValueError was raised when the conflicting booking was attempted, then asserting that the original appointment remained retrievable and that its date, time and status were unchanged. These assertions verify both the rejection and the preservation of the original appointment.
 
 ## J Regression Run
 
@@ -188,39 +207,39 @@ Record actual work in test design, implementation, review, traceability, diagnos
 
 | Member | Actual contribution | Evidence link |
 |---|---|---|
-| [complete] | [complete] | [complete] |
+| Kynan | Part A-O | Commit history |
 
 ## N Formative Questions
 
 1. What question does verification answer?
-[response]
+Verification checks whether the software meets its specified requirements and technical specifications.
 
 2. What question does validation answer?
-[response]
+Validation checks whether the software meets user needs and is fit for its intended purpose.
 
 3. What is a unit test?
-[response]
+A unit test checks a small, individual part of a program, such as a function or method, to confirm that it behaves as expected
 
 4. What is a pytest fixture?
-[response]
+A pytest fixture provides reusable setup or resources for tests, such as creating a fresh data store and registering a patient and practitioner before each test.
 
 5. What is parametrisation in pytest?
-[response]
+Parametrisation allows the same test to run with multiple inputs and expected outcomes, reducing repeated code and helping test different cases consistently.
 
 6. What is regression testing?
-[response]
+Parametrisation allows the same test to run with multiple inputs and expected outcomes, reducing repeated code and helping test different cases consistently.
 
 7. What does code coverage tell us, and what does it not prove?
-[response]
+Code coverage indicates how much of the code was executed during testing. It does not prove that the code is correct or that the tests adequately check the expected behaviour.
 
 8. What makes an assertion weak?
-[response]
+An assertion is weak when it does not adequately verify the required outcome. For example, checking only that an exception is raised does not confirm that the original data remains unchanged after the operation fails.
 
-9. What is the appropriate role of GitHub Copilot as a test assistant?
-[response]
+10. What is the appropriate role of GitHub Copilot as a test assistant?
+GitHub Copilot can suggest test cases, edge cases and assertions, but its suggestions must be reviewed and tested by a person. The developer remains responsible for checking that tests match the requirements and genuinely detect incorrect behaviour.
 
-10. What is the Stage 7 engineering rule?
-[response]
+11. What is the Stage 7 engineering rule?
+GitHub Copilot can suggest test cases, edge cases and assertions, but its suggestions must be reviewed and tested by a person. The developer remains responsible for checking that tests match the requirements and genuinely detect incorrect behaviour.
 
 ## O Stage Completion
 
