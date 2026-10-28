@@ -218,48 +218,48 @@ Each member's substantive contribution and artefact: [complete]
 
 1. What should an engineer do before changing code in response to a failure?
 
-Response: [complete]
+Response: Reproduce the failure, record the expected and observed behaviour, inspect the evidence and test possible causes before making the smallest justified change.
 
 2. Where should expected behaviour come from during debugging?
 
-Response: [complete]
+Response: Expected behaviour should come from the requirements, acceptance criteria and specified behaviour of the system, rather than personal assumptions or the behaviour of a failing test alone.
 
 3. What is a debugging hypothesis?
 
-Response: [complete]
+Response: A debugging hypothesis is a possible explanation for a failure that can be investigated and tested against evidence.
 
 4. What is a regression test and why is it retained?
 
-Response: [complete]
+Response: A regression test checks that previously working behaviour remains correct after changes. It is retained so future changes can be checked against known requirements and to help prevent previously fixed defects from returning.
 
 5. What is meant by root cause?
 
-Response: [complete]
+Response: It is the underlying issue of a defect, rather than just a symptom or location of the failure. 
 
 6. What is refactoring?
 
-Response: [complete]
+Response: Refactoring is improving the internal structure of the readability of the code without changing it's required external behaviour.
 
 7. What is a swallowed exception?
 
-Response: [complete]
+Response: A swallowed exception occurs when an exception is caught but ignored or not properly reported, potentially hiding a failure and allowing the program to continue in an unexpected state.
 
 8. What is a code smell?
 
-Response: [complete]
+Response: A sign that code may be difficult to understand, maintain or test, such as duplicated logic, long methods or deeply nested conditionals. It suggests a possible improvement but does not automatically mean the code is defective.
 
 9. How should GitHub Copilot-generated debugging diagnoses be treated?
 
-Response: [complete]
+Response: They should be treated as suggestions or hypotheses, not established facts. Engineers must verify them against the requirements, source code, reproducible failures and test results before making changes.
 
 10. What is the Stage 8 engineering rule?
 
-Response: [complete]
+Response: Use evidence and requirement-linked tests to guide changes, make the smallest justified modification, retain regression tests, and verify the result. Do not invent failures or assume a proposed diagnosis is correct without evidence.
 
 ## L. Completion and handover
 
-- [ ] Existing project, earlier tests and stage records preserved.
-- [ ] Passing Stage 7 SHA and safe preparation details recorded.
+- [x] Existing project, earlier tests and stage records preserved.
+- [x] Passing Stage 7 SHA and safe preparation details recorded.
 - [ ] Both defects reproduced with meaningful failing tests.
 - [ ] Both human hypotheses recorded before Copilot; actual suggestions evaluated with evidence.
 - [ ] Supported causes and minimal repairs explained; focused and full regression results recorded.
