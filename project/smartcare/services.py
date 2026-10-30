@@ -153,3 +153,19 @@ class AppointmentService:
         empty list.
         """
         raise NotImplementedError('Stage 9: practitioner appointments')
+
+# stage 8
+def test_cancelled_appointment_remains_in_history():
+    data_store, _, _, appointment_service = foundation()
+
+    appointment = appointment_service.book_appointment(
+        'A1', 'P1', 'D1', datetime(2026, 10, 1, 9)
+    )
+
+    appointment.cancel()
+
+    assert appointment.status is AppointmentStatus.CANCELLED
+    assert data_store.list_appointments() == [appointment]
+    assert data_store.find_appointment('A1') is appointment
+
+
