@@ -150,6 +150,7 @@ def test_domain_cancellation_and_guard() -> None:
     with pytest.raises(ValueError):
         appointment.cancel()
     assert appointment.status is AppointmentStatus.CANCELLED
+    assert data_store.find_appointment('A1') is appointment
 
 #Stage 6 - Patient lookup
 def test_find_patient():
