@@ -135,3 +135,21 @@ class Appointment:
         if self.status is not AppointmentStatus.SCHEDULED:
             raise ValueError('Only SCHEDULED appointments may be cancelled')
         self._status = AppointmentStatus.CANCELLED
+
+#stage 8
+
+def test_patient_update_details():
+    patient = Patient("P1", "Alex Example")
+
+    patient.update_details("Alex Smith")
+
+    assert patient.name == "Alex Smith"
+
+
+def test_patient_update_details_rejects_blank_name():
+    patient = Patient("P1", "Alex Example")
+
+    with pytest.raises(ValueError):
+        patient.update_details("")
+
+    assert patient.name == "Alex Example"
