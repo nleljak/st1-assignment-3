@@ -47,6 +47,9 @@ class Patient:
         """Return the patient identity supplied at construction."""
         return self._patient_id
 
+def update_details(self, name: str) -> None:
+    """Update the patient's name after validation."""
+    self.name = required_text(name, 'Patient name')
 
 class Practitioner:
     """A practitioner with validated identity, name and specialty."""
