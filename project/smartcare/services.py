@@ -29,50 +29,19 @@ class PatientService:
         return patient
 
     def find_patient(self, patient_id: str) -> Patient:
-        """Stage 6 TODO: return the stored patient for a valid patient ID.
-
-        Completion must raise LookupError for absence and ValueError for
-        a blank/invalid ID. It must not create a replacement patient.
-        The starter deliberately raises NotImplementedError.
-        """
-        raise NotImplementedError('Stage 6: patient lookup')
+        def find_patient(self, patient_id: str) -> Patient:
+    patient = self.data_store.find_patient(patient_id)
+    if patient is None:
+        raise LookupError('Patient not found')
+    return patient
 
 
 class PractitionerService:
-    """Coordinate practitioner registration and lookup through the shared
-    store.
-    """
-
-    def __init__(self, data_store: SmartCareDataStore) -> None:
-        """Use the shared store to coordinate practitioner operations."""
-        self.data_store = data_store
-
-    def register_practitioner(
-        self,
-        practitioner_id: str,
-        name: str,
-        specialty: str,
-    ) -> Practitioner:
-        """Validate and register a practitioner, returning the stored
-        object.
-
-        Raise ValueError for invalid fields or an existing practitioner
-        ID.
-        """
-        practitioner = Practitioner(practitioner_id, name, specialty)
-        self.data_store.add_practitioner(practitioner)
-        return practitioner
-
     def find_practitioner(self, practitioner_id: str) -> Practitioner:
-        """Stage 6 TODO: return the stored practitioner for a valid ID.
-
-        Completion must raise LookupError for absence and ValueError for
-        a blank/invalid ID. It must not create a replacement
-        practitioner. The starter deliberately raises
-        NotImplementedError.
-        """
-        raise NotImplementedError('Stage 6: practitioner lookup')
-
+    practitioner = self.data_store.find_practitioner(practitioner_id)
+    if practitioner is None:
+        raise LookupError('Practitioner not found')
+    return practitioner
 
 class AppointmentService:
     """Coordinate booking, lookup and cancellation using the shared store."""
@@ -133,13 +102,10 @@ class AppointmentService:
         return appointment
 
     def cancel_appointment(self, appointment_id: str) -> Appointment:
-        """Stage 6: cancel through the domain method and retain the
-        appointment.
-
-        Return the cancelled object. Unknown IDs raise LookupError;
-        invalid transitions raise ValueError and leave state unchanged.
-        """
-        raise NotImplementedError('Stage 6: appointment cancellation')
+        def cancel_appointment(self, appointment_id: str) -> Appointment:
+    appointment = self.find_appointment(appointment_id)
+    appointment.cancel()
+    return appointment
 
     def list_practitioner_appointments(
         self,
