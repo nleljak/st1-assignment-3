@@ -301,3 +301,20 @@ def test_repeated_cancellation_rejected():
 
     assert appointment.status is AppointmentStatus.CANCELLED
 
+# Stage 9 
+def test_service_cancellation_retains_history():
+    data_store, _, _, appointment_service = foundation()
+
+    appointment = appointment_service.book_appointment(
+        'A1',
+        'P1',
+        'D1',
+        datetime(2026, 10, 1, 9),
+    )
+
+    cancelled = appointment_service.cancel_appointment('A1')
+
+    assert cancelled is appointment
+    assert cancelled.status is AppointmentStatus.CANCELLED
+    assert data_store.find_appointment('A1') is appointment
+
