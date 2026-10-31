@@ -122,24 +122,34 @@ Three plausible causes were considered. First, the appointment may have been rem
 
 ## C. F8-01 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
+- Symptom / observed behaviour: The previously supplied AppointmentService.cancel_appointment() method was incomplete and raised NotImplementedError('Stage 6: appointment cancellation') instead of performing cancellation.
+- Expected behaviour and requirement: Under the appointment cancellation requirements, cancelling an existing scheduled appointment should change its status to CANCELLED while retaining the appointment in the data store. The appointment should remain accessible through find_appointment(). Repeated cancellation should raise ValueError. Relevant requirements include AC-05.2 and FR-07, as identified in the assignment material.
+- Minimal synthetic reproduction steps:
+Register a patient and practitioner.
+Book appointment A1.
+Call cancel_appointment('A1').
+Check the appointment status and whether it remains accessible through find_appointment('A1').
 - Meaningful failing test path/name and exact relevant failure: [complete]
 - Human hypothesis and intended checks: see E, F8-01.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
-- Smallest justified fix / diff / why other behaviour is preserved: [complete]
+- Supported root cause and inspected code/runtime evidence: In the previously supplied services.py, AppointmentService.cancel_appointment() contained a NotImplementedError rather than delegating cancellation to the domain object. The supplied Appointment.cancel() method already implemented the status transition and rejected invalid cancellation attempts. The data store retained appointments in its _appointments dictionary, and there was no public deletion operation.
+- Smallest justified fix / diff / why other behaviour is preserved: Replace the incomplete service method with a lookup of the existing appointment, call its domain-level cancel() method, and return the cancelled appointment.
 - Repair SHA / focused verification result: [complete]
 
 ## D. F8-02 diagnosis and repair
 
-- Symptom / observed behaviour: [complete]
-- Expected behaviour and requirement: [complete]
-- Minimal synthetic reproduction steps: [complete]
+- Symptom / observed behaviour: The previously supplied PatientService.find_patient() method was incomplete and raised NotImplementedError('Stage 6: patient lookup') instead of retrieving a registered patient.
+- Expected behaviour and requirement: A registered patient should be retrievable using their patient ID. An unknown patient ID should raise LookupError rather than returning an invalid patient or an unexplained None.
+- Minimal synthetic reproduction steps:
+Create a SmartCareDataStore and PatientService.
+Register a patient with ID P1.
+Call find_patient('P1').
+Confirm that the returned object is the registered patient.
+Call find_patient('UNKNOWN').
+Confirm that the service raises LookupError.
 - Meaningful failing test path/name and exact relevant failure: [complete]
 - Human hypothesis and intended checks: see E, F8-02.
-- Supported root cause and inspected code/runtime evidence: [complete after diagnosis]
-- Smallest justified fix / diff / why other behaviour is preserved: [complete]
+- Supported root cause and inspected code/runtime evidence: In the previously supplied services.py, PatientService.find_patient() contained a NotImplementedError. The data store already provided find_patient(patient_id), which returned the registered patient or None when no matching patient existed. The service therefore needed to handle the missing-patient case.
+- Smallest justified fix / diff / why other behaviour is preserved: Delegate the lookup to the existing data store and raise LookupError when no patient is found. This reuses the existing storage functionality, preserves the registered patient object and provides consistent error handling for unknown IDs.
 - Repair SHA / focused verification result: [complete]
 
 ## E. Human-first hypotheses
@@ -195,30 +205,36 @@ Unrelated failures investigated / resolution: No unrelated failures were identif
 
 ## H. Refactoring decision and before/after verification
 
-Smell and exact location: [complete]
-Small proposed structural change / why justified: [complete before editing]
-External behaviour to preserve / relevant tests: [complete]
+Smell and exact location: The identified code smell was nested conditional logic in SmartCareDataStore.has_practitioner_conflict() in data_store.py. Multiple nested if statements made the conflict-checking logic harder to read and maintain.
+Small proposed structural change / why justified: The proposed refactoring was to replace the nested conditional statements with a single any() expression using a generator expression. This simplifies the logic and makes the three conflict conditions easier to identify.
+External behaviour to preserve / relevant tests: The method must continue to identify a conflict only when an existing appointment has the same practitioner, the same date and time, and a SCHEDULED status. Appointments belonging to different practitioners, appointments at different times and cancelled appointments must not create conflicts
 Before result: see G, full passing suite.
-Actual change / diff / separate refactor SHA: [complete]
-Focused and full after-refactor commands / working directory / results / evidence: [complete]
-Result — accepted, revised or rejected / reason / behaviour-preservation conclusion: [complete]
+Actual change / diff / separate refactor SHA: The nested conditional logic was replaced with an any() expression. The change was recorded in Git commit [insert SHA].
+Focused and full after-refactor commands / working directory / results / evidence: Ran the practitioner conflict tests followed by python -m pytest -v from the project/ directory.
+Result — accepted, revised or rejected / reason / behaviour-preservation conclusion: The refactoring was accepted because it simplified the internal structure while preserving the existing conflict-checking behaviour, as demonstrated by the before-and-after test results.
 
 ## I. Git, human review and integration
 
-Issues for both defects / refactor scope and owners: [complete]
-Branch / prepared, repair and refactor checkpoints: [link B/C/D/H]
-PR link and another member's reviewer identity: [complete]
-Key human feedback, difference from Copilot findings and response/outcome: [complete]
-Actual review approval / merge evidence: [complete]
-Integrated code SHA and team pull/retest command / working directory / result: [complete]
-Evidence-only later SHA / explanation if different: [complete or not applicable]
-Each member's substantive contribution and artefact: [complete]
+Issues for both defects / refactor scope and owners: Appointment cancellation: Investigated the cancellation workflow to ensure cancelled appointments remained stored and accessible. Owner: Kynan. Investigated the patient lookup functionality to ensure registered patients could be retrieved and unknown patient IDs were handled correctly. Owner: Kynan. Reviewed the existing code without changing its functionality. Owner: Nikola.
+Branch / prepared, repair and refactor checkpoints: The group completed the Stage 8 work using the Main branch. The prepared faulty-state version was recorded using commit.  
+PR link and another member's reviewer identity: The completed work was submitted through GitHub using pull request. Nikola reviewed the changes made by Kynan before integration.
+Key human feedback, difference from Copilot findings and response/outcome: The human reviewer examined the code changes and provided feedback regarding appointment cancelliation. Copilot suggested fixing PatientService.find_patient(), while the human reviewer identified appointment cancellation. The group considered this feedback incomplete at the service layer rather than defective in the data store. The data store already provides the lookup operation and returns None for unknown IDs.
+Actual review approval / merge evidence: The pull request was approved by Nikola after the requested changes were addressed. The changes were subsequently merged into the main branch. Evidence is available in the GitHub pull request review and merge history.
+Integrated code SHA and team pull/retest command / working directory / result: After merging, both group members updated their local repositories using:
+git pull origin main
+The group ran the complete test suite using:
+python -m pytest -v
+The command was executed from the project/ directory.
+Evidence-only later SHA / explanation if different: N/A
+Each member's substantive contribution and artefact: 
+Kynan: Investigated and repaired F8-01, contributed to the refactoring work, executed relevant tests and documented the debugging process.
+Nikola: Investigated and repaired F8-02, reviewed Kynan's code changes, provided feedback and verified the integrated implementation.
 
 ## J. Required reflections
 
-1. Which Copilot diagnosis appeared convincing but lacked evidence? [complete; report honestly if none and discuss the least-supported real suggestion]
-2. What evidence changed your group's view? [complete]
-3. How did regression tests protect the refactoring? [complete]
+1. Which Copilot diagnosis appeared convincing but lacked evidence? One of Copilot's suggestions was that the appointment cancellation problem could have been caused by the data store removing cancelled appointments. This initially appeared convincing because cancelled appointments needed to remain accessible in the system. However, the suggestion lacked supporting evidence because the existing SmartCareDataStore did not contain a public delete operation, and the appointment cancellation method changed the appointment's status rather than removing it. This demonstrated that a plausible explanation should not be accepted without inspecting the actual implementation and testing the behaviour.
+2. What evidence changed your group's view? The group's understanding changed after examining the relevant service, domain and data store methods alongside the test results. In particular, inspecting Appointment.cancel() demonstrated that cancellation changed the appointment status to cancelled, while the appointment remained in the data store. This helped distinguish between the expected behaviour and the actual implementation problem. The group used the test results and code inspection to identify the underlying issue rather than relying solely on Copilot's suggestions.
+3. How did regression tests protect the refactoring? Regression tests helped ensure that the refactoring did not unintentionally change existing SmartCare functionality. Before refactoring, the group ran the full test suite to establish that the repairs were working. After the structural changes, the same tests were executed again to compare the results. Tests covering practitioner conflicts, appointment booking and cancellation helped verify that the application's external behaviour remained consistent. This provided evidence that the refactoring improved the internal code structure without introducing new defects.
 
 ## K. Ten formative questions
 
