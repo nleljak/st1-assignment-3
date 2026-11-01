@@ -5,7 +5,7 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 - Group/tutorial: Tuesday 17:30
 - Members, GitHub usernames and cohorts: Kynan and Nikola, kcsch and nleljak, Tuesday 17:30
 - Repository URL: https://github.com/nleljak/st1-assignment-3.git 
-- Starting SHA: [response]
+- Starting SHA: 074f45c756abb99d2a6126817aba142497b356a5
 
 ## A Requirement to issue activities
 
@@ -190,10 +190,10 @@ Make small traceable changes, test the code, review the changes and record genui
 
 ## M Completion and handover
 
-- Starting SHA: [response]
-- Final Stage 6 code SHA: [response]
-- Test command: [response]
-- Working directory: [response]
+- Starting SHA: 074f45c756abb99d2a6126817aba142497b356a5
+- Final Stage 6 code SHA: 4e94723e7f2a27c0a9474c4b9bad53fc15a28b4d
+- Test command: pytest
+- Working directory: st1-assignment-3/main/project
 - Observed result: Passed
 - PR and another-member reviewer: https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py - Nikola
 - Unresolved issue or none: None
