@@ -179,7 +179,7 @@ Run python -m pytest from project/. Retain all accumulated tests. Record the tes
 
 | Command | Working directory | Code SHA | Passed | Failed | Failure summary | Product defect / test defect / unresolved | Evidence and interpretation |
 |---|---|---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| pytest| st1-assignment-3/stage07/project | 4e94723e7f2a27c0a9474c4b9bad53fc15a28b4d | Passed | 
 
 Individual test runs and changed-order independence evidence: [commands, results, links]
 Optional tutor-led demonstration notes: [optional; leave blank if not used]
@@ -188,10 +188,10 @@ Requirement → test → failure/observation → diagnosis → change → verifi
 
 ## K What the Suite Still Does Not Prove
 
-What does your test suite still not prove? [response]
-Coverage if used: [result or not used]
-Which uncovered areas matter, and why does coverage percentage alone not establish correctness? [response]
-Optional fixtures/parametrisation used and why, if any: [response or not used]
+What does your test suite still not prove? N/A
+Coverage if used: N/A
+Which uncovered areas matter, and why does coverage percentage alone not establish correctness? N/A
+Optional fixtures/parametrisation used and why, if any: N/A
 
 ## L Git and Review Evidence
 
@@ -199,7 +199,9 @@ Use links rather than copying GitHub history. Continue the Stage 6 workflow; no 
 
 | Issue/task | Branch | PR | Reviewer | Key feedback | Outcome |
 |---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| Patient search and lookup validation (FR-02) | feature/patient-search | [complete] | Nikola | Checked handling of valid and unknown patient IDs, including expected error behaviour. | Passed |
+| Appointment cancellation and history retention (FR-06/FR-07) | feature/appointment-cancellation |---| Nikola | Reviewed cancellation logic to ensure appointments are retained rather than deleted and cannot be cancelled twice. | Passed |
+| Regression tests and test coverage | test/regression-suite |---| Nikola | Reviewed whether tests covered relevant success and failure cases without duplicating existing tests. | Passed |
 
 ## M Contribution Evidence
 
@@ -208,6 +210,7 @@ Record actual work in test design, implementation, review, traceability, diagnos
 | Member | Actual contribution | Evidence link |
 |---|---|---|
 | Kynan | Part A-O | Commit history |
+| Nikola | Coding | Commit history |
 
 ## N Formative Questions
 
@@ -243,9 +246,9 @@ GitHub Copilot can suggest test cases, edge cases and assertions, but its sugges
 
 ## O Stage Completion
 
-Tested Stage 7 main SHA: [complete]
-Full-suite result: [complete]
-Unresolved defects and effect on baseline: [complete or none]
-Clean working tree and integration evidence: [complete]
-Stage 8 handover status: [complete; no Stage 8 work assigned]
-All tutorial/formative responses and traceability/Copilot decisions complete: [confirm]
+Tested Stage 7 main SHA: 074f45c756abb99d2a6126817aba142497b356a5
+Full-suite result: All tests passed using pytest
+Unresolved defects and effect on baseline: none
+Clean working tree and integration evidence: 4e94723e7f2a27c0a9474c4b9bad53fc15a28b4d
+Stage 8 handover status: complete
+All tutorial/formative responses and traceability/Copilot decisions complete: confirm
