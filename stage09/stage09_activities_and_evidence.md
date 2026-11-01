@@ -77,40 +77,91 @@ Cover QRY-01–04, FP-01–03, UI-01–02 and relevant FR-01–09. Explain empty
 
 | Requirement / test ID | Code location | Case and meaningful assertion | Actual result | Evidence link |
 |---|---|---|---|---|
-| | | | | |
+| QRY-01 | smartcare/queries.py | Practitioner isolation: appointments belonging to the requested practitioner are returned, while appointments belonging to other practitioners are excluded. | | |
+| QRY-02 | smartcare/queries.py | Status filtering: each AppointmentStatus value returns only appointments with the matching status. A None status returns appointments of all statuses. | | |
+| QRY-03 | smartcare/queries.py | Equal-time sorting: appointments with identical date/time values are ordered by appointment ID. | | |
+| FP-01 | smartcare/queries.py | Repeated calls using the same input produce consistent results without changing the supplied appointments. | | |
+| FP-02 | smartcare/queries.py  | Empty and already-sorted lists are handled correctly. The returned list is a new list and the original source order and appointment fields remain unchanged. | | |
+| FP-03 | smartcare/queries.py  | The named appointment_sort_key() function is reused for sorting, keeping the sorting logic consistent and avoiding duplicated logic. | | |
+| QRY-01 | smartcare/queries.py  | A known practitioner with no appointments returns an empty list. An unknown practitioner and an invalid status are rejected appropriately. | | |
+| HIST-01 | tests/test_workflows.py  | A cancelled appointment remains retrievable and appears in an unfiltered practitioner listing, but is excluded from a scheduled-only listing. | | |
 
 Include practitioner isolation, every enum status/default all, equal-time ID tie-break, named-key reuse, repeated calls, empty/already-sorted fresh lists, unchanged source order/fields, known-empty/unknown/invalid service cases and retained history.
 
-Purity explanation from code inspection, including absence of hidden state and I/O: <!-- response -->
-What the tests do and do not establish: <!-- response -->
+Purity explanation from code inspection, including absence of hidden state and I/O: The query functions are designed to be pure because they operate only on the appointment data supplied through their arguments. They do not access global or hidden state, read user input, print output, access files or modify the original appointment collection.
 
 ## D. Integrated console and workflow evidence
 
 | Scenario / acceptance ID | Reproducible inputs / artefact | Expected result | Observed result and state check | Evidence link |
 |---|---|---|---|---|
-| UI-01 full menu workflow | | | | |
-| UI-02 invalid-input recovery | | | | |
-| Automated service workflow | | | | |
+| UI-01 full menu workflow | Register P1, D1 and D2; book A1 and A2; attempt a practitioner conflict; cancel and retrieve A1; list appointments; book into the freed slot; exit. | Successful registration and booking, rejection of the practitioner conflict, successful cancellation, retained appointment history, correct filtered listings and successful reuse of the freed slot. | | |
+| UI-02 invalid-input recovery | Duplicate and unknown IDs, blank IDs, malformed and impossible dates, invalid status, unknown menu choice and repeated cancellation. | Invalid operations are rejected with appropriate messages. The application remains usable and invalid operations do not corrupt existing records. | | |
+| Automated service workflow | Automated tests in tests/test_workflows.py. | Registration, booking, conflict checking, cancellation, retrieval and practitioner listing work together correctly. | | |
 
 Include registration/find, booking, conflict rejection, different-practitioner booking, cancellation, retrieval, listing/filtering, freed slot and exit; duplicate/unknown/blank IDs, malformed/impossible date, invalid status, unknown choice and repeated cancellation. Identify before/after state and subsequent successful action.
 
 ## E. GitHub Copilot review and human decisions
 
-Human design completed before AI: <!-- reference -->
-Actual prompt/context supplied: <!-- paste or accessible reference -->
-Actual response: <!-- accessible reference -->
+Human design completed before AI: The initial design separated appointment filtering and sorting from service coordination and console interaction.
+
+The query functions were designed to operate on supplied appointment collections without modifying the source data. The service layer was responsible for validating the practitioner and optional appointment status, retrieving the current appointments from the shared data store and delegating filtering and sorting to the query functions.
+
+The console remained responsible for reading user input, displaying appointment information and handling expected errors. This approach maintained the existing application architecture and avoided introducing unnecessary complexity.
+Actual prompt/context supplied: Act as a senior Python software engineer reviewing my Stage 9 SmartCare appointment management application.
+I want you to critically review my implementation of appointment querying, practitioner appointment listing and the integrated console workflow.
+The application uses an in-memory data store and follows a layered architecture consisting of:
+Domain objects, which enforce business rules and invariants.
+Data store, which manages shared patient, practitioner and appointment collections.
+Services, which coordinate operations and validate inputs.
+Query functions, which filter and sort appointment collections.
+Console, which handles user input and presentation.
+Stage 9 requirements:
+appointment_sort_key(appointment) must return a tuple containing the appointment date/time and appointment ID.
+Select_appointments(appointments, practitioner_id, status=None) must filter by practitioner and optional appointment status.
+A None status must include appointments of all statuses.
+Results must be sorted in ascending order using the named appointment_sort_key function.
+The query must return a new list and must not modify the original list or appointment objects.
+list_practitioner_appointments() must validate that the practitioner exists and that a supplied status is a valid AppointmentStatus.
+The service must retrieve a fresh appointment list from the data store and delegate filtering and sorting to the query function.
+Cancelled appointments must remain retrievable and appear in unfiltered listings.
+The console must support practitioner appointment listing with optional status filtering.
+Existing functionality and accumulated tests must continue to work.
+Please review the code I provide and:
+Identify genuine implementation defects or potential edge cases.
+Identify missing or weak automated tests.
+Check whether responsibilities are correctly separated.
+Check for unnecessary duplication or over-engineering.
+Examine whether query functions are genuinely pure.
+Check whether cancellation retains appointment history.
+Identify any changes that could break existing functionality.
+For every finding, provide:
+The specific issue.
+Its location in the code.
+Its severity (High, Medium or Low).
+Whether it should be fixed.
+A suggested correction.
+Actual response: The implementation should retain its existing layered architecture. Filtering and sorting should remain in the query module, practitioner validation and data retrieval should remain in the service layer, and user interaction should remain in the console.
+I would not recommend introducing database persistence, additional repository layers or unnecessary abstractions because these are not required by the Stage 9 specification.
+Before merging, run the complete accumulated test suite and ensure that the new query and workflow tests pass alongside the existing tests.
 
 | AI finding | Code/test evidence | Severity | Accept/Modify/Reject and reason | Change or no change | Actual verification |
 |---|---|---|---|---|---|
-| | | | | | |
 
-Responsibility check: explain how domain invariants, shared-store collections, service coordination, pure queries and console effects remain separate: <!-- response -->
+| Avoid in-place sorting of the original appointment list. | `smartcare/queries.py`; FP-02 | Medium | Accept. Modifying the original list would violate the query purity requirement. | Used `sorted()` to return a new list without changing the original collection. | FP-02 confirmed the returned list was separate and the original order remained unchanged. |
+| Include appointment ID as a secondary sorting key when appointment times are equal.| `smartcare/queries.py`; QRY-03 | Medium | Accept. This ensures deterministic ordering when appointments share the same date and time. | Updated `appointment_sort_key()` to return date/time and appointment ID. | QRY-03 verified the expected ordering. |
+| Validate practitioner existence and appointment status in the service layer. | `smartcare/services.py`; QRY-04 | Medium | Accept. This separates invalid requests from valid practitioners who simply have no matching appointments. | Added or retained practitioner and status validation before querying appointments. | QRY-04 tested known-empty, unknown-practitioner and invalid-status cases. |
+| Retain cancelled appointments rather than deleting them. | `smartcare/services.py`; `tests/test_workflows.py`; HIST-01 | Medium | Accept. Appointment history must remain available throughout the session. | Cancellation updates the appointment status rather than removing the record. | HIST-01 checked retrieval and filtered/unfiltered listings after cancellation. |
+| Add database persistence to retain records after application exit. | Stage 9 in-memory storage requirement | High | Reject. Database persistence is outside the specified scope and would introduce unnecessary complexity. | No change. The application continues to use in-memory storage. | Checked the implementation against the Stage 9 requirements. |
+| Add tests for empty, already-sorted and repeated query calls. | `tests/test_queries.py`; FP-01 and FP-02 | Low | Accept if these cases were not already covered. They provide additional evidence of consistent query behaviour. | Added focused tests where coverage was missing. | Re-ran the relevant query tests. |
+
+
+Responsibility check: explain how domain invariants, shared-store collections, service coordination, pure queries and console effects remain separate: The application separates responsibilities across five components. Domain objects enforce business rules and invariants, such as valid appointment details and permitted status transitions. The shared data store manages the in-memory collections of patients, practitioners and appointments, providing a consistent source of data for the services. Services coordinate application operations by validating inputs, retrieving records and calling the appropriate domain or query functions. Pure query functions are responsible only for filtering and sorting the appointments supplied to them; they do not modify the original collections or perform input/output operations. Finally, the console layer handles user interaction, including displaying menus, collecting input and presenting results or error messages. This separation keeps business rules, data management, application coordination, querying and user interaction independent and easier to test.
 
 ## F. Required reflections
 
-1. Which integration concern was architectural rather than a filtering/sorting detail? <!-- response -->
-2. Which Copilot suggestion did you reject as over-engineering, and why? <!-- response -->
-3. How did you prove cancelled appointments remain retrievable and listable in the same session? <!-- response -->
+1. Which integration concern was architectural rather than a filtering/sorting detail? The main architectural concern was ensuring that the service layer correctly integrated the shared data store with the pure query functions. The service needed to validate that the practitioner existed and that any supplied status was valid before retrieving the current appointment collection and passing it to the query function. This was important because filtering and sorting alone could not distinguish an unknown practitioner from a valid practitioner who simply had no appointments. Keeping this coordination in the service layer preserved the separation of responsibilities.
+2. Which Copilot suggestion did you reject as over-engineering, and why? We rejected the suggestion to introduce database persistence. Although persistence could allow appointment records to remain available after the application closes, it was outside the Stage 9 requirements, which specified an in-memory application. Adding a database would introduce unnecessary complexity and additional responsibilities without improving the required functionality. We therefore retained the existing in-memory data store.
+3. How did you prove cancelled appointments remain retrievable and listable in the same session? We verified this through the cancellation workflow. After cancelling an appointment, we retrieved it again using its appointment ID and checked that the record still existed with a CANCELLED status. We then listed the practitioner's appointments without a status filter and confirmed that the cancelled appointment remained visible. Finally, we used the scheduled-only filter and checked that the cancelled appointment was excluded. This demonstrated that cancellation changes the appointment's status rather than deleting the record.
 
 ## G. Ten formative answers
 
