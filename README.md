@@ -5,10 +5,10 @@ Baseline: Stage 6 foundation, 2026 revision 2. This starter deliberately leaves 
 
 ## Group index
 
-- Group and tutorial: [complete]
-- Member names, GitHub usernames and UG/PG cohorts: [complete]
-- Shared repository URL: [complete]
-- Latest completed stage: [complete]
+- Group and tutorial: Online group 2, Tuesday 17:30
+- Member names, GitHub usernames and UG/PG cohorts: Kynan, Nikola, kynancsch, nleljak, UG
+- Shared repository URL: https://github.com/nleljak/st1-assignment-3
+- Latest completed stage: Stage 12
 - Verified code SHA: [complete]
 - Test command, working directory and observed result: [complete]
 - Final submitted SHA, if different from tested code SHA: [complete; explain evidence-only changes]
