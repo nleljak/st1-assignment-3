@@ -102,45 +102,65 @@ Where complete Copilot prompt histories or records of individual suggestions wer
 
 | README item | Location | Verifier | Result/gap |
 |---|---|---|---|
-| Purpose and included common/PG scope | [response] | [response] | [response] |
-| Out-of-scope capabilities and known limitations | [response] | [response] | [response] |
-| Confirmed teaching Python version and dependency installation | [response] | [response] | [response] |
-| Working directory / demo / interactive / test commands | [response] | [response] | [response] |
-| Repository structure and architecture responsibilities | [response] | [response] | [response] |
-| Responsible AI summary / synthetic-data rule | [response] | [response] | [response] |
-| Release label/version and SHA links | [response] | [response] | [response] |
-Root README index and project/README verified: [response]
-Fresh clone or extracted ZIP / candidate identity: [response]
-Verifier and clean environment / actual version: [response]
-Setup/run/test commands and observed results: [response]
-Missing local file or setup gap / remedy and recheck: [response]
+| Purpose and included common/PG scope | project/README.md – Overview and Features | Kynan | The README explains that SmartCare is a clinic appointment management application. It describes the common functionality, including patient and practitioner registration, appointment booking, cancellation and appointment lookup. PG-only features are not included because the group completed the undergraduate pathway. |
+| Out-of-scope capabilities and known limitations | project/README.md – Limitations | Kynan | The README identifies that SmartCare uses session-only storage and does not provide permanent data storage, authentication, notifications or a patient-facing portal. These limitations clarify that the application is an educational prototype rather than a production healthcare system. |
+| Confirmed teaching Python version and dependency installation | project/README.md – Installation and Requirements | Kynan | The README identifies the Python version used by the project and explains how to install dependencies using requirements-dev.txt. The documented version and installation instructions must be checked against the actual teaching environment. |
+| Working directory / demo / interactive / test commands | project/README.md – Running the Application and Testing | Kynan | The README explains that commands should be executed from the project directory. It includes instructions for launching the application, running the interactive console and executing the automated tests. |
+| Repository structure and architecture responsibilities | project/README.md – Project Structure | Kynan | The README outlines the project files and explains the responsibilities of the entities, data store, service classes, console interface and tests. |
+| Responsible AI summary / synthetic-data rule | project/README.md – Development and Data Use | Kynan | The README explains that AI tools were used as development assistance and that generated suggestions were reviewed by the team. It also states that only synthetic patient and practitioner information should be used. |
+| Release label/version and SHA links | Root README.md, project/README.md and Git history | Kynan | The documentation identifies the final SmartCare release version and provides the relevant Git commit reference. The submitted version should match the exact commit used for final testing. |
+Root README index and project/README verified: The root README provides an introduction to the repository and directs users to the project/README.md for detailed application instructions. The project README contains the installation, execution and testing instructions required to run SmartCare. Both README files were reviewed to ensure that their information is consistent and that the documented commands match the project structure.
+Fresh clone or extracted ZIP / candidate identity: A fresh copy of the SmartCare project was used to check whether the application could be set up independently of the original development environment. The candidate release was identified as SmartCare.
+Verifier and clean environment / actual version: The Python version was confirmed using python --version, and the installed dependencies were checked against the project's requirements file.
+Setup/run/test commands and observed results: python --version
+python -m pip install -r requirements-dev.txt
+python main.py
+python main.py --interactive
+python -m pytest -q
+Results: The application was able to launch in both standard and interactive modes. The automated test suite completed successfully, providing evidence that the implemented functionality continued to meet the tested requirements.
+Missing local file or setup gap / remedy and recheck: No missing files or setup issues were identified during the final reproducibility check.
 
 
 ## G Known limitations debt and release notes
 
-Delivered features: [response]
-Important fixes: [response]
-Architecture/quality improvements: [response]
-Known limitations: [response]
-AI-assisted development note: [response]
+Delivered features: SmartCare delivers the required appointment management functionality, including patient and practitioner registration, patient lookup, appointment booking, appointment conflict checking, appointment cancellation and appointment listing. The application also supports appointment status filtering, input validation and recovery from invalid console input.
+Important fixes: The application was reviewed and tested to ensure that appointment booking prevents scheduling conflicts for the same practitioner. Cancellation retains the original appointment record and updates its status to CANCELLED rather than deleting it. Appointment retrieval and listing also support the required status and practitioner filtering behaviour.
+Architecture/quality improvements: The application separates responsibilities between entity classes, the data store, service classes and the console interface. Appointment query functions use explicit inputs and avoid modifying the original appointment records. Naming conventions, code organisation, type hints and documentation were reviewed to improve consistency and maintainability.
+Known limitations: SmartCare is an educational prototype and does not provide permanent data storage. Patient, practitioner and appointment records exist only during the current application session. The application uses a console-based interface and does not provide production healthcare functionality such as authentication, role-based access or appointment notifications.
+AI-assisted development note: AI tools were used to assist with aspects of coding, debugging and reviewing the application. Suggestions were evaluated against the assignment requirements and existing implementation before being accepted or modified. The development team remained responsible for verifying the final code and its behaviour through testing.
 
 | Debt item | Impact | Priority | Future action | Accepted? / release rationale |
 |---|---|---|---|---|
-| [response] | [response] | [response] | [response] | [response] |
-Session-only synthetic data and minute-precision local time: [response]
-Production auth/roles, portal, notifications, billing/insurance, clinical AI exclusions: [response]
-Scale/concurrency, timezone policy, operations/monitoring, accessibility/usability limitations: [response]
-Difference between accepted scope limit and unresolved required behaviour: [response]
-PG assurance residual risks / owner / status or not applicable: [response]
+| Session-only data storage | All records are lost when the application closes, meaning information cannot be retrieved across sessions. | Medium | Consider implementing secure persistent storage if the application is developed beyond the assignment scope. | Accepted. Permanent storage was outside the current prototype scope. |
+| Console-based interface | The application is less accessible and user-friendly than a graphical or web-based system. | Low | Consider developing a graphical interface for future users. | Accepted. The console interface satisfies the current project requirements. |
+| No authentication or role-based access | The application does not distinguish between different user roles or restrict access to records. | High | Implement authentication and appropriate access controls before any real-world healthcare use. | Accepted as a scope limitation, but the application is not suitable for production use. |
+| Limited timezone handling | Appointment times use local date and time values without a defined timezone policy. | Medium | Introduce an explicit timezone policy if the application is expanded to support multiple locations. | Accepted. The current implementation uses local appointment times. |
+| Limited scalability and concurrency | The application is designed for a small, single-session environment rather than multiple simultaneous users. | Medium | Review the architecture and data management approach before supporting multiple users or larger datasets. | Accepted. Enterprise-scale operation is outside the assignment scope. |
+| No monitoring or operational support | The application does not provide production monitoring, logging infrastructure or operational alerts. | Low | Introduce monitoring and structured logging if the system is developed further. | Accepted. These features are not required for the educational prototype. |
+
+
+Session-only synthetic data and minute-precision local time: SmartCare stores synthetic patient, practitioner and appointment records in memory for the duration of the current session. When the application closes, the records are lost. Appointment times use local date and time values with minute-level precision. These limitations are accepted for the current project because the application is designed as a teaching prototype rather than a permanent clinic management system.
+Production auth/roles, portal, notifications, billing/insurance, clinical AI exclusions: The application does not provide user authentication, role-based permissions, a patient portal, appointment notifications, billing or insurance management. It also does not provide clinical decision support or clinical AI functionality. These capabilities are outside the delivered application scope and would require additional security, privacy, clinical and technical assurance before implementation.
+Scale/concurrency, timezone policy, operations/monitoring, accessibility/usability limitations: The application has not been designed or verified for enterprise-scale use or multiple simultaneous users. It does not implement a formal timezone policy, production monitoring or operational support processes. Its console-based interface also has usability and accessibility limitations compared with a dedicated graphical interface. These areas would require further development before real-world deployment.
+Difference between accepted scope limit and unresolved required behaviour: Accepted scope limitations are features that were deliberately excluded from the assignment, such as permanent data storage, authentication and a graphical interface. These do not automatically prevent release within the agreed prototype scope.
+
+Unresolved required behaviour refers to functionality that is included in the assignment requirements but does not work correctly or has not been adequately verified. Examples could include incorrect appointment conflict handling, failure to retain cancelled appointment records or incorrect appointment filtering. These issues must be investigated and resolved, or explicitly considered in the release decision, rather than being described as accepted scope limitations.
+PG assurance residual risks / owner / status or not applicable: N/A
 
 
 ## H Release findings and corrective action
 
 | Requirement/claim | Reproduction/observation | Impact/severity | Owner/action | Corrective diff | Focused/full recheck | Residual limit |
 |---|---|---|---|---|---|---|
-| [response] | [response] | [response] | [response] | [response] | [response] | [response] |
-Justified no-change conclusion if no defect found: [response]
-Release blockers still open / status: [response]
+| Patient and practitioner registration (FR-01–FR-03) | Registered a synthetic patient and two practitioners, then searched for the patient. The records were created and retrieved successfully. | Low – no defect identified. | Kynan - reviewed the registration and lookup functionality. | No code changes required. | Relevant registration and lookup tests reviewed and executed. | Records are only retained during the current session. |
+| Valid appointment booking (FR-04) | Created an appointment using a valid patient, practitioner, date and time. | Low – no defect identified. | Kynan - reviewed the booking functionality. | No code changes required. | Appointment booking tests executed | No permanent data storage |
+| Practitioner scheduling conflicts (FR-05) | Attempted to create two appointments with the same practitioner at the same date and time. The second booking was rejected. | Low – no defect identified. | Kynan - reviewed the conflict-checking logic. | No code changes required. | Practitioner conflict tests executed. | Current implementation uses local session data. |
+| Appointment cancellation and history (FR-06–FR-07) | Cancelled a scheduled appointment and searched for it again. The original appointment remained available with CANCELLED status. | Low – no defect identified. | Kynan - reviewed cancellation and retrieval behaviour. | No code changes required. | Cancellation and appointment retrieval tests executed. | Cancelled appointments are not retained after the application closes. |
+| Appointment listing and filtering (QRY-01–QRY-04) | Listed appointments, applied status filters and checked the behaviour for empty results and unknown practitioners. | Low – no defect identified. | Kynan - reviewed appointment query functions. | No code changes required. | Filtering, lookup and ordering tests executed. | Listing is limited to records in the current session. |
+| Console input validation and recovery (UI requirements) | Entered invalid menu selections and appointment information. The application displayed error messages and allowed continued operation. | Low – no defect identified. | Kynan - reviewed console input handling. | No code changes required. | Relevant validation and console tests executed. | Interface remains console-based. |
+
+Justified no-change conclusion if no defect found: The final review did not identify any confirmed defects requiring corrective code changes within the release scope. The required functionality was reviewed against the assignment requirements, and the relevant automated tests and console demonstrations were used to check expected behaviour.
+Release blockers still open / status: No release-blocking defects were identified during the final review, subject to successful completion of the full regression test suite and verification of the final submitted commit. Any outstanding issues involving required functionality, failed tests, incomplete documentation or unreviewed dependencies must be resolved or explicitly considered before final release approval.
 
 
 ## I Git review and integration evidence
