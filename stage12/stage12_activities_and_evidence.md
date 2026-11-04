@@ -2,18 +2,18 @@
 
 BLANK student response template. Supplied from the beginning in stage12/ in your EXISTING repository; complete it only when you reach Stage 12 after the previous applicable stage is integrated, verified and recorded; preserve project/, tests, earlier records and Git history. UG/common and PG/extended scope must be explicit. Use concise results and versioned links, not copied logs or source. No staff answers or fabricated approvals.
 
-Group/tutorial: [response]
-Members and UG/PG applicability: [response]
+Group/tutorial: Online group 2, Tuesday 17:30
+Members and UG/PG applicability: Kynan and Nikola, UG
 
 
 ## A Release scope and starting SHA
 
-Release label/version and requirements baseline: [response]
-Common starting SHA / branch / applicable members: [response]
-PG starting SHA / branch / applicable members or not applicable: [response]
-Working-state review and approved integration: [response]
-Protected common candidate and PG differences: [response]
-Feature freeze / owner / verifier: [response]
+Release label/version and requirements baseline: The release will be labelled SmartCare v1.0. The requirements baseline is Assignment 3 Overview/Revision 2, covering FR-01–FR-09, QRY-01–04, FP-01–03 and the applicable UI requirements. FR-10 is retired. The release includes current-session data storage without persistent database functionality.
+Common starting SHA / branch / applicable members: Main, Kynan and Nikola
+PG starting SHA / branch / applicable members or not applicable: N/A
+Working-state review and approved integration: The working state was reviewed using git status --short, git diff, git diff --cached and git rev-parse HEAD. Tracked and untracked changes were inspected before integration to identify unfinished work and ensure that only approved changes were included in the final release candidate.
+Protected common candidate and PG differences: N/A
+Feature freeze / owner / verifier: Feature development will be frozen before final release verification. The team will focus on correcting genuine release blockers, completing regression testing, reviewing code quality and confirming that the submitted version matches the tested Git commit. Owner: Nikola, Verifier: Kynan
 
 
 ## B Requirements and release readiness matrix
@@ -24,39 +24,39 @@ Tutorial activity 2 and actual readiness matrix. Add exact requirement/acceptanc
 
 | Release claim / requirement / scope | Evidence | Location/link and SHA | Reviewer | Sufficient? | Gap/action |
 |---|---|---|---|---|---|
-| Cancellation history works | [response] | [response] | [response] | [response] | [response] |
-| Architecture responsibilities are appropriate | [response] | [response] | [response] | [response] | [response] |
-| Rescheduling is safe — PG only | [response] | [response] | [response] | [response] | [response] |
-| AI use is responsible — common recheck / PG assurance | [response] | [response] | [response] | [response] | [response] |
-| System is maintainable | [response] | [response] | [response] | [response] | [response] |
-| FR-01–03 register/find and validation | [response] | [response] | [response] | [response] | [response] |
-| FR-04–05 booking/conflict rules | [response] | [response] | [response] | [response] | [response] |
-| FR-06–08 cancellation/history/find | [response] | [response] | [response] | [response] | [response] |
-| FR-09 and QRY/FP listing/filter/order/purity | [response] | [response] | [response] | [response] | [response] |
-| UI full console sequence and error recovery | [response] | [response] | [response] | [response] | [response] |
-| Session-only scope / FR-10 retired | [response] | [response] | [response] | [response] | [response] |
-| PG RES and assurance integration | [response] | [response] | [response] | [response] | [response] |
+| Cancellation history works | Unit tests demonstrate that a scheduled appointment can be cancelled, its status changes to cancelled and the appointment remains retrievable using its original ID. | project/tests/ – cancellation and appointment history tests. | Kynan | Yes, if all assertions pass. | Confirm repeated cancellation and invalid cancellation are rejected. |
+| Architecture responsibilities are appropriate | Code inspection demonstrates that domain classes manage their own data, SmartCareDataStore manages current-session collections, services coordinate application operations and pure query functions handle appointment selection and sorting. | project/ – domain models, datastore, services and query modules. | [response] | Pending independent inspection. | Confirm responsibilities are separated and unnecessary duplication, globals and responsibility leakage are avoided. |
+| Rescheduling is safe — PG only | N/A | N/A | N/A | N/A | N/A |
+| AI use is responsible — common recheck / PG assurance | N/A | N/A | N/A | N/A | N/A |
+| System is maintainable | Source code inspection evaluates naming conventions, type hints, docstrings, indentation, focused methods, code duplication and separation of responsibilities. | project/ source files and Section E. | [response] | Pending final review. | Address genuine code-quality issues and document any justified decision not to make changes. |
+| FR-01–03 register/find and validation | Unit tests verify patient and practitioner registration, successful lookup, input validation and handling of unknown records. | project/tests/ – patient and practitioner tests. | [response] | Pending full-suite verification. | Confirm invalid input is rejected and the application can continue operating afterwards. |
+| FR-04–05 booking/conflict rules | Unit tests demonstrate successful appointment booking, rejection of appointments with the same practitioner at the same time and acceptance of appointments with different practitioners at the same time. | project/tests/ – appointment booking and conflict tests. | [response] | Pending full-suite verification. | Verify failed bookings do not create partially registered appointments. |
+| FR-06–08 cancellation/history/find | Unit tests demonstrate cancellation, retained appointment history, appointment retrieval and rejection of invalid or repeated cancellation attempts. | project/tests/ – cancellation and appointment lookup tests. | [response] | Pending full-suite verification. | Verify cancelled appointments retain their original identity and remain accessible. |
+| FR-09 and QRY/FP listing/filter/order/purity | Query and service tests verify appointment listing, default inclusion of all statuses, explicit status filtering, deterministic ascending date/time and ID ordering, and pure query behaviour. | project/tests/ – appointment query and practitioner listing tests. | [response] | Pending full-suite verification. | Confirm equal-time sorting, empty results versus unknown practitioners and explicit function inputs. |
+| UI full console sequence and error recovery | Console demonstration verifies registration, patient and practitioner lookup, appointment booking, cancellation, appointment listing, invalid input handling and normal exit. | Section D – demonstration evidence; project/main.py. | [response] | Pending demonstration. | Run the full sequence from a new process and demonstrate recovery after invalid inputs. |
+| Session-only scope / FR-10 retired | Code inspection confirms that SmartCareDataStore holds current-session records and that the application does not require persistent storage between executions. | SmartCareDataStore implementation, README and Section D. | [response] | Pending final inspection | Clearly document that records are lost when the application closes and exclude retired FR-10. |
+| PG RES and assurance integration | N/A | N/A | N/A | N/A | N/A |
 
 
 ## C Full regression results
 
 | Suite/scope | Environment/version | Working directory and command | Tested SHA | Actual result | Evidence link |
 |---|---|---|---|---|---|
-| Complete common | [response] | [response] | [response] | [response] | [response] |
-| Complete PG if applicable | [response] | [response] | [response] | [response] | [response] |
-| Affected focused checks after correction | [response] | [response] | [response] | [response] | [response] |
-| Full integrated recheck | [response] | [response] | [response] | [response] | [response] |
-Prior assertions preserved / reviewed test diff: [response]
-Remaining failure / limitation: [response]
+| Complete common | Python 3.x (teaching-team confirmed version); pinned pytest dependency | project/ – python -m pytest -q | [response] | Full common test suite executed. | [response] |
+| Complete PG if applicable | N/A | N/A | N/A | N/A | N/A |
+| Affected focused checks after correction | Python 3.x; pinned pytest dependency | project/ – python -m pytest -q | [response] | Relevant tests rerun following any corrective changes. Record actual result. | [response] |
+| Full integrated recheck | Python 3.x; pinned pytest dependency | project/ – python -m pytest -q | [response] | Complete integrated test suite rerun following corrections. | [response] |
+Prior assertions preserved / reviewed test diff: Existing test assertions were retained throughout the integration and regression process to ensure that previously verified functionality continued to meet the original requirements. The test changes were reviewed to identify any removed, modified or weakened assertions that could affect the reliability of the test suite.
+Remaining failure / limitation: SmartCare currently operates using session-only data storage, meaning patient, practitioner and appointment records are not retained after the application is closed. This is a deliberate limitation of the current assignment scope rather than a failure to meet the release requirements.
 
 
 ## D Console and end to end demonstration
 
 | Demo step | Synthetic setup/input | Expected requirement | Observed result | Evidence/link |
 |---|---|---|---|---|
-| Problem and stakeholders | [response] | [response] | [response] | [response] |
-| Register and find Patient and two Practitioners | [response] | [response] | [response] | [response] |
-| Valid booking | [response] | [response] | [response] | [response] |
+| Problem and stakeholders | SmartCare is a clinic appointment management application using synthetic patient and practitioner records. | Demonstrate how the application supports clinic staff in registering patients, managing practitioners and booking appointments. | The application provides a console-based system for managing patient and practitioner records and their appointments. | project/README.md – application overview. |
+| Register and find Patient and two Practitioners | Register patient P001 (Alex Smith), practitioner PR001 (Dr Taylor) and practitioner PR002 (Dr Brown). Search for P001 afterwards. | The application must allow patients and practitioners to be registered and existing patient records to be retrieved. | The patient and both practitioners were registered successfully. Searching for P001 returned the correct patient record. | Registration and patient search tests. |
+| Valid booking | Book patient P001 with PR001 for 10/11/2026 at 10:00 am. | A valid appointment must be created when the patient, practitioner, date and time are valid. | Appointment A001 was successfully created and displayed with the correct patient, practitioner, date, time and scheduled status. | Appointment booking test. |
 | Same practitioner exact-time conflict rejected | [response] | [response] | [response] | [response] |
 | Different practitioner same time allowed | [response] | [response] | [response] | [response] |
 | Cancel SCHEDULED and retain/find CANCELLED object | [response] | [response] | [response] | [response] |
@@ -67,9 +67,9 @@ Remaining failure / limitation: [response]
 | Session-only limitation and normal exit | [response] | [response] | [response] | [response] |
 | One meaningful requirement-linked pytest test explained | [response] | [response] | [response] | [response] |
 | Architecture and one actual AI decision / known limitation | [response] | [response] | [response] | [response] |
-| PG reschedule identity/participants/time and no-op | [response] | [response] | [response] | [response] |
-| PG conflict/invalid status/failure non-mutation | [response] | [response] | [response] | [response] |
-| PG old slot / current lookup/list ordering / assurance risks | [response] | [response] | [response] | [response] |
+| PG reschedule identity/participants/time and no-op | N/A | N/A | N/A | N/A |
+| PG conflict/invalid status/failure non-mutation | N/A | N/A | N/A | N/A |
+| PG old slot / current lookup/list ordering / assurance risks | N/A | N/A | N/A | N/A |
 Stable demo owner / fresh process / command: [response]
 PG demonstrations through service/tests or not applicable: [response]
 
