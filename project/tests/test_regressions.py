@@ -164,6 +164,8 @@ def test_cancelled_appointment_is_not_scheduled():
 
     retrieved_appointment = store.find_appointment("A001")
 
+    
+
     assert retrieved_appointment is not None
     assert retrieved_appointment.status == AppointmentStatus.CANCELLED
     assert retrieved_appointment.status != AppointmentStatus.SCHEDULED
