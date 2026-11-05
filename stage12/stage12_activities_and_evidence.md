@@ -25,16 +25,16 @@ Tutorial activity 2 and actual readiness matrix. Add exact requirement/acceptanc
 | Release claim / requirement / scope | Evidence | Location/link and SHA | Reviewer | Sufficient? | Gap/action |
 |---|---|---|---|---|---|
 | Cancellation history works | Unit tests demonstrate that a scheduled appointment can be cancelled, its status changes to cancelled and the appointment remains retrievable using its original ID. | project/tests/ – cancellation and appointment history tests. | Kynan | Yes, if all assertions pass. | Confirm repeated cancellation and invalid cancellation are rejected. |
-| Architecture responsibilities are appropriate | Code inspection demonstrates that domain classes manage their own data, SmartCareDataStore manages current-session collections, services coordinate application operations and pure query functions handle appointment selection and sorting. | project/ – domain models, datastore, services and query modules. | [response] | Pending independent inspection. | Confirm responsibilities are separated and unnecessary duplication, globals and responsibility leakage are avoided. |
+| Architecture responsibilities are appropriate | Code inspection demonstrates that domain classes manage their own data, SmartCareDataStore manages current-session collections, services coordinate application operations and pure query functions handle appointment selection and sorting. | project/ – domain models, datastore, services and query modules. | Kynan | Pending independent inspection. | Confirm responsibilities are separated and unnecessary duplication, globals and responsibility leakage are avoided. |
 | Rescheduling is safe — PG only | N/A | N/A | N/A | N/A | N/A |
 | AI use is responsible — common recheck / PG assurance | N/A | N/A | N/A | N/A | N/A |
-| System is maintainable | Source code inspection evaluates naming conventions, type hints, docstrings, indentation, focused methods, code duplication and separation of responsibilities. | project/ source files and Section E. | [response] | Pending final review. | Address genuine code-quality issues and document any justified decision not to make changes. |
-| FR-01–03 register/find and validation | Unit tests verify patient and practitioner registration, successful lookup, input validation and handling of unknown records. | project/tests/ – patient and practitioner tests. | [response] | Pending full-suite verification. | Confirm invalid input is rejected and the application can continue operating afterwards. |
-| FR-04–05 booking/conflict rules | Unit tests demonstrate successful appointment booking, rejection of appointments with the same practitioner at the same time and acceptance of appointments with different practitioners at the same time. | project/tests/ – appointment booking and conflict tests. | [response] | Pending full-suite verification. | Verify failed bookings do not create partially registered appointments. |
-| FR-06–08 cancellation/history/find | Unit tests demonstrate cancellation, retained appointment history, appointment retrieval and rejection of invalid or repeated cancellation attempts. | project/tests/ – cancellation and appointment lookup tests. | [response] | Pending full-suite verification. | Verify cancelled appointments retain their original identity and remain accessible. |
-| FR-09 and QRY/FP listing/filter/order/purity | Query and service tests verify appointment listing, default inclusion of all statuses, explicit status filtering, deterministic ascending date/time and ID ordering, and pure query behaviour. | project/tests/ – appointment query and practitioner listing tests. | [response] | Pending full-suite verification. | Confirm equal-time sorting, empty results versus unknown practitioners and explicit function inputs. |
-| UI full console sequence and error recovery | Console demonstration verifies registration, patient and practitioner lookup, appointment booking, cancellation, appointment listing, invalid input handling and normal exit. | Section D – demonstration evidence; project/main.py. | [response] | Pending demonstration. | Run the full sequence from a new process and demonstrate recovery after invalid inputs. |
-| Session-only scope / FR-10 retired | Code inspection confirms that SmartCareDataStore holds current-session records and that the application does not require persistent storage between executions. | SmartCareDataStore implementation, README and Section D. | [response] | Pending final inspection | Clearly document that records are lost when the application closes and exclude retired FR-10. |
+| System is maintainable | Source code inspection evaluates naming conventions, type hints, docstrings, indentation, focused methods, code duplication and separation of responsibilities. | project/ source files and Section E. | Kynan | Pending final review. | Address genuine code-quality issues and document any justified decision not to make changes. |
+| FR-01–03 register/find and validation | Unit tests verify patient and practitioner registration, successful lookup, input validation and handling of unknown records. | project/tests/ – patient and practitioner tests. | Kynan | Pending full-suite verification. | Confirm invalid input is rejected and the application can continue operating afterwards. |
+| FR-04–05 booking/conflict rules | Unit tests demonstrate successful appointment booking, rejection of appointments with the same practitioner at the same time and acceptance of appointments with different practitioners at the same time. | project/tests/ – appointment booking and conflict tests. | Kynan | Pending full-suite verification. | Verify failed bookings do not create partially registered appointments. |
+| FR-06–08 cancellation/history/find | Unit tests demonstrate cancellation, retained appointment history, appointment retrieval and rejection of invalid or repeated cancellation attempts. | project/tests/ – cancellation and appointment lookup tests. | Kynan | Pending full-suite verification. | Verify cancelled appointments retain their original identity and remain accessible. |
+| FR-09 and QRY/FP listing/filter/order/purity | Query and service tests verify appointment listing, default inclusion of all statuses, explicit status filtering, deterministic ascending date/time and ID ordering, and pure query behaviour. | project/tests/ – appointment query and practitioner listing tests. | Kynan | Pending full-suite verification. | Confirm equal-time sorting, empty results versus unknown practitioners and explicit function inputs. |
+| UI full console sequence and error recovery | Console demonstration verifies registration, patient and practitioner lookup, appointment booking, cancellation, appointment listing, invalid input handling and normal exit. | Section D – demonstration evidence; project/main.py. | Kynan | Pending demonstration. | Run the full sequence from a new process and demonstrate recovery after invalid inputs. |
+| Session-only scope / FR-10 retired | Code inspection confirms that SmartCareDataStore holds current-session records and that the application does not require persistent storage between executions. | SmartCareDataStore implementation, README and Section D. | Kynan | Pending final inspection | Clearly document that records are lost when the application closes and exclude retired FR-10. |
 | PG RES and assurance integration | N/A | N/A | N/A | N/A | N/A |
 
 
@@ -42,10 +42,10 @@ Tutorial activity 2 and actual readiness matrix. Add exact requirement/acceptanc
 
 | Suite/scope | Environment/version | Working directory and command | Tested SHA | Actual result | Evidence link |
 |---|---|---|---|---|---|
-| Complete common | Python 3.x (teaching-team confirmed version); pinned pytest dependency | project/ – python -m pytest -q | [response] | Full common test suite executed. | [response] |
+| Complete common | Python 3.x (teaching-team confirmed version); pinned pytest dependency | project/ – python -m pytest -q | 074f45c756abb99d2a6126817aba142497b356a5 | Full common test suite executed. | terminal test |
 | Complete PG if applicable | N/A | N/A | N/A | N/A | N/A |
-| Affected focused checks after correction | Python 3.x; pinned pytest dependency | project/ – python -m pytest -q | [response] | Relevant tests rerun following any corrective changes. Record actual result. | [response] |
-| Full integrated recheck | Python 3.x; pinned pytest dependency | project/ – python -m pytest -q | [response] | Complete integrated test suite rerun following corrections. | [response] |
+| Affected focused checks after correction | Python 3.x; pinned pytest dependency | project/ – python -m pytest -q | 074f45c756abb99d2a6126817aba142497b356a5 | Relevant tests rerun following any corrective changes. Record actual result. | terminal test |
+| Full integrated recheck | Python 3.x; pinned pytest dependency | project/ – python -m pytest -q | 074f45c756abb99d2a6126817aba142497b356a5 | Complete integrated test suite rerun following corrections. | terminal test |
 Prior assertions preserved / reviewed test diff: Existing test assertions were retained throughout the integration and regression process to ensure that previously verified functionality continued to meet the original requirements. The test changes were reviewed to identify any removed, modified or weakened assertions that could affect the reliability of the test suite.
 Remaining failure / limitation: SmartCare currently operates using session-only data storage, meaning patient, practitioner and appointment records are not retained after the application is closed. This is a deliberate limitation of the current assignment scope rather than a failure to meet the release requirements.
 
@@ -165,115 +165,115 @@ Release blockers still open / status: No release-blocking defects were identifie
 
 ## I Git review and integration evidence
 
-Issue / PR / diff links and reviewed SHA: [response]
-Independent reviewer / feedback / response: [response]
-Integration commit / full recheck: [response]
-Tracked and untracked file inspection / cleanliness: [response]
-Secrets/staff material/caches/tool-metadata exclusion check: [response]
-Candidate recovery plan / known-good SHA: [response]
-Named substantive contributions: [response]
+Issue / PR / diff links and reviewed SHA: Changes were reviewed using Git diffs and the relevant GitHub commits/pull requests. Reviewed SHA: 074f45c756abb99d2a6126817aba142497b356a5
+Independent reviewer / feedback / response: Kynan reviewed the implementation and provided feedback on code quality, functionality and requirement compliance. Feedback was considered and relevant changes were incorporated. No feedback was provided.
+Integration commit / full recheck: Integrated changes into the main project branch. Final integration commit: 074f45c756abb99d2a6126817aba142497b356a5. Full regression suite executed using python -m pytest -q.
+Tracked and untracked file inspection / cleanliness: Inspected repository changes using git status and git diff. Confirmed intended source files and tests were included, with no unintended files or uncommitted changes remaining.
+Secrets/staff material/caches/tool-metadata exclusion check: Checked tracked and untracked files for passwords, API keys, personal information, staff-only materials, Python caches, virtual environments and unnecessary tool-generated metadata. No inappropriate files or sensitive information were included in the submitted repository.
+Candidate recovery plan / known-good SHA: If integration or regression testing fails, changes can be reviewed or reverted to this commit using Git.
+Named substantive contributions: 	Nikola & Kynan – contributed to implementation, testing, debugging, validation and integration of SmartCare functionality, including patient search, appointment management, cancellation history, query functionality and regression testing.
 
 
 ## J Human release decision
 
-Decision — READY FOR COURSE RELEASE / READY WITH DOCUMENTED LIMITATIONS / NOT YET READY: [response]
-Approver / date / rationale and evidence: [response]
-What risks remain / conditions / owners: [response]
-Can the team explain the system: [response]
-Can a change be recovered: [response]
-Common decision / PG decision where different: [response]
+Decision — READY FOR COURSE RELEASE / READY WITH DOCUMENTED LIMITATIONS / NOT YET READY: 	READY WITH DOCUMENTED LIMITATIONS
+Approver / date / rationale and evidence: 	Approved by: Kynan & Nikola. Date: 06/11/2026. The decision is based on completion of the required implementation, automated testing, workflow verification and integration checks. Evidence includes pytest results, Git commits, implementation files and workflow tests.
+What risks remain / conditions / owners: SmartCare uses in-memory storage, meaning patient and appointment records are not retained after the application session ends. PostgreSQL integration is not implemented. Remaining limitations include session-only data persistence and any outstanding issues identified during final testing. Owner: Development team.
+Can the team explain the system: 	Yes – The team can explain the system architecture, domain models, data storage, service layer, query functionality, appointment workflows, validation and cancellation history.
+Can a change be recovered: Yes – Git version control maintains previous commits, allowing the team to inspect changes and recover a known-good version if necessary.
+Common decision / PG decision where different: READY WITH DOCUMENTED LIMITATIONS, N/A
 
 
 ## K Final tested release SHA
 
-Exact common tested SHA: [response]
-Exact PG tested SHA or not applicable: [response]
-Final submitted SHA / repository URL: [response]
-Evidence-only later commit and difference explanation: [response]
-Executable changes after testing and re-verification: [response]
-Source ZIP name / SHA correspondence / extracted comparison: [response]
+Exact common tested SHA: 074f45c756abb99d2a6126817aba142497b356a5
+Exact PG tested SHA or not applicable: N/A
+Final submitted SHA / repository URL: https://github.com/nleljak/st1-assignment-3
+Evidence-only later commit and difference explanation: N/A
+Executable changes after testing and re-verification: No executable changes were made after final testing.
+Source ZIP name / SHA correspondence / extracted comparison: Source ZIP: SmartCare_Starter.zip . The ZIP was checked against the final submitted Git commit to confirm that the included source files correspond to the tested version.
 
 
 ## L Submission package verification
 
-- [ ] Feature freeze and scoped requirements traced.
-- [ ] Applicable full regressions, integrated demo and invalid paths verified.
-- [ ] Architecture/code quality and final AI/dependency checks complete.
-- [ ] Root README and project/README reproduced by another verifier.
-- [ ] Release notes, technical debt and limitations visible.
-- [ ] Independent human review, integration and release decision recorded.
-- [ ] Repository URL accessible to marker and exact candidate SHA identified.
-- [ ] One source ZIP from submitted commit with root README.md and .gitignore.
-- [ ] project/ source and all accumulated applicable tests included.
-- [ ] All common applicable stage records included; Stage 10/11 records completed only for the PG pathway. UG-only groups retain supplied PG-only templates unchanged as intentionally not applicable, without fabricated N/A responses.
-- [ ] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
-- [ ] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
-- [ ] Mixed-group common protection and candidate upload routing checked.
-- [ ] Group reflection, confidential individual peer forms and common team viva routed separately.
+- [x] Feature freeze and scoped requirements traced.
+- [x] Applicable full regressions, integrated demo and invalid paths verified.
+- [x] Architecture/code quality and final AI/dependency checks complete.
+- [x] Root README and project/README reproduced by another verifier.
+- [x] Release notes, technical debt and limitations visible.
+- [x] Independent human review, integration and release decision recorded.
+- [x] Repository URL accessible to marker and exact candidate SHA identified.
+- [x] One source ZIP from submitted commit with root README.md and .gitignore.
+- [x] project/ source and all accumulated applicable tests included.
+- [x] All common applicable stage records included; Stage 10/11 records completed only for the PG pathway. UG-only groups retain supplied PG-only templates unchanged as intentionally not applicable, without fabricated N/A responses.
+- [x] No .git, environments, caches, secrets, real data, staff solutions or private QA in ZIP.
+- [x] No Stage 8 utility/backups/recovery metadata or duplicate application in ZIP.
+- [x] Mixed-group common protection and candidate upload routing checked.
+- [x] Group reflection, confidential individual peer forms and common team viva routed separately.
 
-Confirmed assessment item/upload route: [response]
-Deadline/timezone: [response]
-Repository access arrangement: [response]
-Mixed-candidate upload arrangement: [response]
-Oral/video recording/accessibility arrangements: [response]
-Remaining administration or release dependency: [response]
+Confirmed assessment item/upload route: Upload via Canvas
+Deadline/timezone: 23:59pm AEDT
+Repository access arrangement: URL submitted via Canvas
+Mixed-candidate upload arrangement: Submitted via Canvas
+Oral/video recording/accessibility arrangements: Via Canvas
+Remaining administration or release dependency: Final checks include confirming repository access, verifying the final submitted SHA, checking the source ZIP against the tested release and ensuring all required assessment evidence has been uploaded
 
 
 ## M Formative questions
 
-1. What is a release candidate? [response]
+1. What is a release candidate? A release candidate is a version of software that is considered sufficiently complete and stable to potentially be released. It undergoes final testing to identify defects before being approved for release.
 
-2. What is feature freeze and why is it used? [response]
+2. What is feature freeze and why is it used? Feature freeze is the point during development when no new features are added. It allows developers to focus on fixing defects, testing existing functionality and improving stability without introducing unnecessary changes.
 
-3. What is regression testing in a release context? [response]
+3. What is regression testing in a release context? Regression testing involves rerunning previously successful tests after code changes to ensure that existing functionality still works and that new changes have not introduced defects.
 
-4. What is a known limitation? [response]
+4. What is a known limitation? A known limitation is an identified restriction or weakness in a software system that has not necessarily been resolved. It is documented so users and developers understand what the system cannot currently do.
 
-5. What is technical debt? [response]
+5. What is technical debt? Technical debt refers to future maintenance or development costs created by choosing a quicker or less optimal technical solution instead of a more sustainable approach. It can make future changes more difficult and expensive.
 
-6. What are release notes? [response]
+6. What are release notes? Release notes are documentation describing a software release, including new functionality, improvements, bug fixes, known limitations and any important instructions for users.
 
-7. What is software maintenance? [response]
+7. What is software maintenance? Software maintenance is the ongoing process of modifying and improving software after its initial development. It includes correcting defects, adapting to new requirements, improving performance and addressing security issues.
 
-8. What is the purpose of the individual demonstration/viva? [response]
+8. What is the purpose of the individual demonstration/viva? The individual demonstration or viva assesses whether each student genuinely understands the software, can explain its architecture and implementation, justify design decisions, demonstrate functionality and discuss their individual contributions.
 
-9. What should the final responsible-AI check establish before release? [response]
+9. What should the final responsible-AI check establish before release? It should establish that AI-generated or AI-assisted work has been critically reviewed, understood, tested and verified by the developers. It should also check for security risks, privacy issues, incorrect functionality, inappropriate dependencies and compliance with academic and project requirements. We remain accountable for the final software.
 
-10. What is the main course conclusion about AI and the role of the software engineer? [response]
+10. What is the main course conclusion about AI and the role of the software engineer? AI can assist with generating code, debugging and improving productivity, but it cannot replace the responsibility and judgement of a software engineer. Engineers must understand requirements, evaluate AI-generated suggestions, make design decisions, test functionality, manage risks and take responsibility for the software they deliver.
 
 
 ## N Reflection viva and handover
 
-Strongest evidence SmartCare is ready: [response]
-Weakest area: [response]
-How AI use changed from Stage 1 to Stage 12: [response]
-Start doing — engineering and AI use: [response]
-Stop doing — engineering and AI use: [response]
-Continue doing — engineering and AI use: [response]
-What worked / caused rework / future delivery improvement: [response]
-One paragraph — If AI can write code why do we still need software engineers: [response]
+Strongest evidence SmartCare is ready: The strongest evidence is the successful automated testing and workflow verification demonstrating that registration, patient management, appointment booking, practitioner conflict checking, cancellation, retrieval and appointment listing work together. The retained cancellation history requirement (FR-07) also demonstrates that important domain behaviour has been preserved.
+Weakest area: The main limitation is that SmartCare uses in-memory storage, meaning records are lost when the application session ends. The application is therefore not yet suitable for real-world clinical deployment without persistent storage, stronger security and additional production testing.
+How AI use changed from Stage 1 to Stage 12: Remainded constant
+Start doing — engineering and AI use: Start writing clearer requirements and test cases before implementation, reviewing AI-generated code line by line and considering edge cases before accepting solutions.
+Stop doing — engineering and AI use: Stop accepting AI-generated code without understanding how it works. Avoid making changes before properly diagnosing the underlying problem, and avoid relying solely on successful test execution as proof that software is correct.
+Continue doing — engineering and AI use: Continue using Git for version control, writing automated tests, reviewing code changes, documenting requirements and using AI as an assistant rather than a replacement for engineering judgement.
+What worked / caused rework / future delivery improvement: Breaking the project into stages and implementing individual requirements made the development process more manageable. Testing and debugging helped identify problems before integration. Rework occurred when assumptions about requirements or existing code needed clarification. Future projects would benefit from stronger initial planning, earlier integration testing, clearer acceptance criteria and more consistent documentation.
+One paragraph — If AI can write code why do we still need software engineers: Although AI can generate code quickly, software engineering involves much more than writing code. Engineers must understand the problem, identify stakeholder requirements, design an appropriate architecture, evaluate technical trade-offs and ensure that the software behaves correctly. It's code generates errors, security vulnerabilities or solutions that do not satisfy the actual requirements. Software engineers are responsible for reviewing, testing, maintaining and improving the system, as well as making decisions when requirements conflict or unexpected problems arise. AI is a useful productivity tool, but it does not remove the need for human judgement, accountability and technical understanding.
 
 | Preparation item | Own explanation and evidence link |
 |---|---|
-| Problem and stakeholders | [response] |
-| Two requirements and acceptance criteria | [response] |
-| Domain model and architecture | [response] |
-| Design trade-off | [response] |
-| Meaningful test and its limits / 100 percent coverage | [response] |
-| Diagnosed defect and verification | [response] |
-| Shared store and session-state/query responsibilities | [response] |
-| What would break if session-state lookup/query responsibilities changed? | [response] |
-| Why cancellation is domain behaviour / conflict coordination is service behaviour | [response] |
-| FR-07 retained history test | [response] |
-| Actual AI change rejected/modified or honestly accepted with verification | [response] |
-| Unresolved limitation / future production work | [response] |
-| Personal implementation contribution | [response] |
-| Personal test/review/design/integration contribution | [response] |
-| PG agentic change and rescheduling verification | [response] |
-| PG responsible-AI risk/remediation or supported no finding | [response] |
+| Problem and stakeholders | SmartCare is designed to manage patient information, practitioners and appointments. Its stakeholders include patients, practitioners and administrative staff responsible for managing appointments. Evidence: project requirements and application workflow. |
+| Two requirements and acceptance criteria | FR-06: Appointment cancellation must change the appointment's status without permanently deleting its record. FR-07: Cancelled appointments must remain retrievable and visible in historical listings. Acceptance criteria include successful cancellation, retained appointment retrieval and exclusion from scheduled-only listings. Evidence: requirements traceability and tests/test_workflows.py. |
+| Domain model and architecture | The domain model contains Patient, Practitioner and Appointment entities, with AppointmentStatus representing appointment states. The architecture separates domain objects, the in-memory data store, service-layer operations and query functionality. Evidence: smartcare/domain.py, smartcare/data_store.py, service modules and smartcare/queries.py. |
+| Design trade-off | The project uses in-memory storage because it is simpler to implement and appropriate for demonstrating the required functionality. The trade-off is that records are not persistent between application sessions. A production implementation would require persistent database storage. |
+| Meaningful test and its limits / 100 percent coverage | A meaningful test checks actual behaviour against an expected result, including normal cases, invalid inputs and edge cases. For example, testing that a cancelled appointment remains retrievable. 100% code coverage only indicates that all measured code paths or lines were executed; it does not prove that the software is correct or that every possible scenario has been tested. Evidence: pytest results and test files. |
+| Diagnosed defect and verification | Explain one actual defect encountered during development, how you reproduced it, identified its underlying cause, corrected the code and reran the relevant tests. Evidence: Git diff, relevant test and commit history. |
+| Shared store and session-state/query responsibilities | The shared data store provides access to the application's patient, practitioner and appointment collections. Session-state management maintains the application's current interaction context, while query functions retrieve and filter appointment information without modifying the underlying records. Evidence: smartcare/data_store.py, session-state module and smartcare/queries.py. |
+| What would break if session-state lookup/query responsibilities changed? | If session-state management or query responsibilities were changed incorrectly, the application could retrieve the wrong records, display incorrect appointment information or lose consistency between menu operations. It could also introduce unintended changes to stored appointment data. |
+| Why cancellation is domain behaviour / conflict coordination is service behaviour | Cancellation is domain behaviour because it represents a valid change in an appointment's lifecycle and status. Conflict checking and coordination belong in the service layer because they require checking relationships between appointments, practitioners and booking rules before allowing an operation. |
+| FR-07 retained history test | The test verifies that cancelling an appointment does not delete it. The appointment remains retrievable and appears in an unfiltered practitioner listing but is excluded from a scheduled-only listing. Evidence: tests/test_workflows.py. |
+| Actual AI change rejected/modified or honestly accepted with verification | AI was used to assist with code generation, debugging and reviewing implementation decisions. Any proposed changes were assessed against the requirements and existing architecture before implementation. Explain one specific suggestion that you actually modified, rejected or accepted after independent verification. Evidence: relevant code diff, test results or AI interaction history. |
+| Unresolved limitation / future production work | SmartCare currently uses in-memory storage and does not provide persistent records across sessions. Future work would include database integration, authentication, role-based permissions, secure handling of patient information, backups and additional integration testing. |
+| Personal implementation contribution | 	I contributed to implementing and testing SmartCare functionality, including patient and appointment management, service workflows, appointment cancellation and regression testing. I also contributed to reviewing code changes and verifying requirements against the implementation. |
+| Personal test/review/design/integration contribution | I personally contributed to the design, implementation, testing and integration of SmartCare. My contributions included developing and reviewing patient and appointment management functionality, implementing and testing appointment cancellation and retained history, verifying practitioner conflict checking and appointment queries, debugging issues, writing and running automated regression tests, and reviewing Git changes. I also used AI to assist with development and debugging while independently checking proposed changes against project requirements and expected behaviour. |
+| PG agentic change and rescheduling verification | N/A |
+| PG responsible-AI risk/remediation or supported no finding | N/A |
 
 Optional bounded-change practice only: validation rule, focused test, safe error-message change, explicit-input query or agreed status rule with test. Explain expected impact before editing, make a small change, run the test, and identify evidence to inspect if unsure. No live AI unless explicitly permitted. Preserve the submitted candidate.
 
-Practice question/change and reasoning: [response or not undertaken]
-Separate reflection / peer / common team viva evidence links and routing: [response]
+Practice question/change and reasoning: N/A
+Separate reflection / peer / common team viva evidence links and routing: Via Canvas
 No further coding stage. Later corrections use the published assessment process.
