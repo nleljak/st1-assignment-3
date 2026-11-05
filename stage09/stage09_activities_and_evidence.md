@@ -4,7 +4,7 @@ Common UG and PG record. All Assignment 3 stage materials are provided from the 
 
 Group: Online group 2
 Members and responsibilities: Kynan and Nikola, both have the same responsibilities
-Stage 8 integrated SHA, command, working directory and actual result: <!-- complete -->
+Stage 8 integrated SHA, command, working directory and actual result: (https://github.com/nleljak/st1-assignment-3/tree/main)
 
 ## A. Tutorial activities
 
@@ -178,14 +178,15 @@ Responsibility check: explain how domain invariants, shared-store collections, s
 
 ## H. Review, completion and common handover
 
-Issues and bounded branches: <!-- links -->
-PR/diff and another-member human reviewer: <!-- actual links/name -->
-Review responses and Copilot comparison: <!-- links -->
-Integrated common Stage 9 SHA: <!-- complete -->
-Full regression command, working directory, actual count/result and evidence: <!-- complete -->
-README run instructions and scope/limitations: <!-- link -->
-Unresolved issues and support/action: <!-- complete -->
-UG common candidate / PG future branch plan: <!-- complete -->
+Issues and bounded branches: (https://github.com/nleljak/st1-assignment-3/tree/debug/stage08)
+PR/diff and another-member human reviewer: Nikola; https://github.com/nleljak/st1-assignment-3/tree/debug/stage08
+Review responses and Copilot comparison: Copilot not used
+Integrated common Stage 9 SHA: (https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries)
+Full regression command, working directory, actual count/result and evidence: (https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries)
+README run instructions and scope/limitations: (https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries)
+Unresolved issues and support/action: The main known limitation is the use of in-memory storage rather than persistent database storage. This means patient, practitioner and appointment records are lost when the application session ends. Future work could include PostgreSQL integration, improved security and persistent record management. Any additional unresolved defects should be documented with an assigned owner and next action.
+Owner: Nikola
+UG common candidate / PG future branch plan: The common undergraduate implementation is maintained as the integrated candidate containing the completed common functionality and associated regression tests.
 
 - [x] Query contracts, purity, new lists and named-key ordering verified.
 - [x] Service empty/unknown/invalid cases and cancellation history verified.
