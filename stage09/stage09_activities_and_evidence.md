@@ -4,7 +4,7 @@ Common UG and PG record. All Assignment 3 stage materials are provided from the 
 
 Group: Online group 2
 Members and responsibilities: Kynan and Nikola, both have the same responsibilities
-Stage 8 integrated SHA, command, working directory and actual result: (https://github.com/nleljak/st1-assignment-3/tree/main)
+Stage 8 integrated SHA, command, working directory and actual result: https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries
 
 ## A. Tutorial activities
 
