@@ -129,7 +129,7 @@ Register a patient and practitioner.
 Book appointment A1.
 Call cancel_appointment('A1').
 Check the appointment status and whether it remains accessible through find_appointment('A1').
-- Meaningful failing test path/name and exact relevant failure: [complete]
+- Meaningful failing test path/name and exact relevant failure: (https://github.com/nleljak/st1-assignment-3/tree/debug/stage08)
 - Human hypothesis and intended checks: see E, F8-01.
 - Supported root cause and inspected code/runtime evidence: In the previously supplied services.py, AppointmentService.cancel_appointment() contained a NotImplementedError rather than delegating cancellation to the domain object. The supplied Appointment.cancel() method already implemented the status transition and rejected invalid cancellation attempts. The data store retained appointments in its _appointments dictionary, and there was no public deletion operation.
 - Smallest justified fix / diff / why other behaviour is preserved: Replace the incomplete service method with a lookup of the existing appointment, call its domain-level cancel() method, and return the cancelled appointment.
