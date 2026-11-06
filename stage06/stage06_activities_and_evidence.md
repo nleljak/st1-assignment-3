@@ -18,7 +18,7 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 - Scope: Patient lookup through the relevant service and data store. Does not include patient registration changes or unrelated appointment functionality.
 - Definition of Done: The lookup behaviour meets the agreed specification, relevant automated tests are passed, the change is reviewed by another team member and the PR is merged according to the team workflow.
 - Owner: Kynan
-- Actual issue link: https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py
+- Actual issue link: https://github.com/nleljak/st1-assignment-3/issues/1
 
 ### FR-06 Appointment Cancellation with FR-07 retained history
 
@@ -29,7 +29,7 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 - Scope: Appointment cancellation behaviour and retention of existing appointment records. Unrelated patient fields, unrelated architecture changes and unnecessary dependencies are excluded.
 - Definition of Done: Cancellation and history-retention requirements pass automated tests, invalid cancellation attempts are handled correctly, another team member reviews the change, and the approved PR is merged.
 - Owner: Kynan/Nikola
-- Actual issue link: https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py
+- Actual issue link: https://github.com/nleljak/st1-assignment-3/issues/2
 
 ## B Commit quality
 
@@ -77,10 +77,10 @@ GitHub Copilot says: "Looks good; tests pass."
 
 Create at least two focused issues. Add a linked practitioner-lookup issue or an explicit supporting criterion with the tutor if needed to cover all three service targets.
 
-| Issue link | Requirement | Owner | Acceptance criteria or precise link | Status |
-|---|---|---|---|---|
-| https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py | FR-02 Patient Search | Kynan | Existing patient ID returns the correct patient; unknown IDs are handled as specified; existing records are preserved. | In progress |
-| https://github.com/nleljak/st1-assignment-3/blob/main/project/tests/test_starter.py | Practitioner Lookup | Nikola | Eligible appointment is cancelled, its record remains retrievable and invalid cancellation attempts are handled according to the specification. | In progress |
+| Issue link                                           | Requirement | Owner | Acceptance criteria or precise link | Status |
+|------------------------------------------------------|---|---|---|---|
+| https://github.com/nleljak/st1-assignment-3/issues/1 | FR-02 Patient Search | Kynan | Existing patient ID returns the correct patient; unknown IDs are handled as specified; existing records are preserved. | In progress |
+| https://github.com/nleljak/st1-assignment-3/issues/1 | Practitioner Lookup | Nikola | Eligible appointment is cancelled, its record remains retrievable and invalid cancellation attempts are handled according to the specification. | In progress |
 
 ## G Pull request evidence
 
@@ -140,17 +140,27 @@ Repeat per member. Include only categories that describe actual work; write not 
 - Debugging or integration: N/A
 - Documentation or team support: Helped design and check the initial code written. 
 
+- Member: Nikola
+- Implementation:
+- Testing: 
+- Review: Reviewed work
+- Issue refinement: N/A
+- Design and responsibility discussion: 
+- Debugging or integration: N/A
+- Documentation or team support: made adjustments when needed
+
 ## K Exit question
 
 Why is a high commit count not necessarily evidence of strong contribution?
 
 As the number of commits measures activity and not the quality or complexity of the work completed.
 
+
 ## L Stage 6 formative questions
 
 1. What is version control?
 
-It is a system that tracks the changes made to files over time, allow for the developers to record, review and revert changes and collaborate with other people without overwriting work. 
+It is a system that tracks the changes made to files over time, allow for the developers to record, review and revert changes and collaborate with other people without overwriting work.
 
 2. Why is a feature branch useful?
 
