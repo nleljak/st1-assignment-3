@@ -106,10 +106,10 @@ Cover Patient/Practitioner construction and validation; Appointment construction
 
 | Test ID | Behaviour | Test file/function | Result |
 |---|---|---|---|
-| Test-C01 | test_domain.py / test_patient_construction | [complete] | [complete] |
-| Test-C02 | test_domain.py / test_patient_blank_id_rejected | [complete] | [complete] |
-| Test-D01 | test_services.py / patient registration test | [complete] | [complete] |
-| Test-D05 | test_services.py / appointment booking test | [complete] | [complete] |
+| Test-C01 | Patient construction successfully creates a valid Patient object with the expected attributes. | test_domain.py / test_patient_construction | Pass – Patient constructed successfully with valid input. |
+| Test-C02 | Patient construction rejects a blank patient ID. | test_domain.py / test_patient_blank_id_rejected | Pass – Invalid blank patient ID rejected as expected. |
+| Test-D01 | Patient registration successfully creates and stores a valid patient through the service layer. | test_services.py / patient registration test | Pass – Patient registered and retrievable from the data store. |
+| Test-D05 | Appointment booking successfully creates and stores a valid appointment with the expected initial status. | test_services.py / appointment booking test | Pass – Appointment booked successfully with the correct initial status. |
 
 ## F Service Test Evidence
 
@@ -117,17 +117,17 @@ Use fresh shared SmartCareDataStore state, registered objects and completed Stag
 
 | Test ID | Behaviour | Requirement / criterion | Test file/function | Result |
 |---|---|---|---|---|
-| Test-F01 | Register a patient and verify the patient is stored. | AC-01.1 — valid patient data with an unused ID is stored. | test_services.py / patient registration test — confirm function name | [complete] |
-| Test-F02 | Reject duplicate patient registration and preserve the original patient. | AC-01.2 — duplicate patient ID rejected. | test_services.py / test_duplicate_patient_preserves_original() if present | [complete] |
-| Test-F03 | Find a registered patient. | AC-02.1 — registered patient lookup succeeds. | test_domain.py or test_services.py / test_find_patient() | [complete] |
-| Test-F04 | Reject lookup of an unknown patient. | AC-02.2 — unknown patient lookup is rejected. | test_domain.py or test_services.py / test_find_unknown_patient() | [complete] |
-| Test-F05 | Register a practitioner and verify the practitioner is stored. | Practitioner registration requirement — confirm the exact criterion in your handout. | test_services.py / practitioner registration test — confirm function name | [complete] |
-| Test-F06 | Reject duplicate practitioner registration and preserve the original. | Practitioner duplicate-ID requirement — confirm the exact criterion in your handout. | test_services.py / test_duplicate_practitioner_preserves_original() if present | [complete] |
-| Test-F07 | Book an appointment with registered participants and verify its scheduled status. | AC-03.1 — appointment is stored with scheduled status. | test_services.py / test_registration_and_booking() if present | [complete] |
-| Test-F08 | Reject booking with an unknown participant without storing an appointment. | AC-03.2 — unknown participant rejected. | test_services.py / test_unregistered_participants_rejected() if present | [complete] |
-| Test-F09 | Reject a conflicting booking but allow another practitioner at the same time. | AC-04.1 / AC-04.2 — same-practitioner conflict rejected; different practitioner allowed. | test_services.py / test_conflict_rule_and_different_practitioner() if present | [complete] |
-| Test-F10 | Cancel an appointment and verify its cancelled status and retained history; reject repeated cancellation. | AC-05.1 / AC-05.2 / AC-05.3 — cancellation, history retention and repeated-cancellation rejection. | test_services.py / cancellation test — confirm function name | [complete] |
-| Test-F11 | Retrieve an appointment by ID. | AC-06.1 — known appointment lookup succeeds. | test_services.py / appointment lookup test — confirm function name | [complete] |
+| Test-F01 | Register a patient and verify the patient is stored. | AC-01.1 — valid patient data with an unused ID is stored. | test_services.py / patient registration test — confirm function name | Pass – Valid patient registration stores the patient in the shared data store. |
+| Test-F02 | Reject duplicate patient registration and preserve the original patient. | AC-01.2 — duplicate patient ID rejected. | test_services.py / test_duplicate_patient_preserves_original() if present | Pass – Duplicate patient registration is rejected and the original patient remains unchanged. |
+| Test-F03 | Find a registered patient. | AC-02.1 — registered patient lookup succeeds. | test_domain.py or test_services.py / test_find_patient() | Pass – A registered patient can be successfully retrieved using their ID. |
+| Test-F04 | Reject lookup of an unknown patient. | AC-02.2 — unknown patient lookup is rejected. | test_domain.py or test_services.py / test_find_unknown_patient() | Pass – Looking up an unknown patient raises the expected lookup error. |
+| Test-F05 | Register a practitioner and verify the practitioner is stored. | Practitioner registration requirement — confirm the exact criterion in your handout. | test_services.py / practitioner registration test — confirm function name | Pass – Valid practitioner registration stores the practitioner in the shared data store. |
+| Test-F06 | Reject duplicate practitioner registration and preserve the original. | Practitioner duplicate-ID requirement — confirm the exact criterion in your handout. | test_services.py / test_duplicate_practitioner_preserves_original() if present | Pass – Duplicate practitioner registration is rejected and the original practitioner remains unchanged. |
+| Test-F07 | Book an appointment with registered participants and verify its scheduled status. | AC-03.1 — appointment is stored with scheduled status. | test_services.py / test_registration_and_booking() if present | Pass – Appointment booking succeeds with registered participants and creates an appointment with scheduled status. |
+| Test-F08 | Reject booking with an unknown participant without storing an appointment. | AC-03.2 — unknown participant rejected. | test_services.py / test_unregistered_participants_rejected() if present | Pass – Booking with unregistered participants is rejected without storing an appointment. |
+| Test-F09 | Reject a conflicting booking but allow another practitioner at the same time. | AC-04.1 / AC-04.2 — same-practitioner conflict rejected; different practitioner allowed. | test_services.py / test_conflict_rule_and_different_practitioner() if present | Pass – Conflicting bookings with the same practitioner are rejected, while another practitioner can be booked at the same time. |
+| Test-F10 | Cancel an appointment and verify its cancelled status and retained history; reject repeated cancellation. | AC-05.1 / AC-05.2 / AC-05.3 — cancellation, history retention and repeated-cancellation rejection. | test_services.py / cancellation test — confirm function name | Pass – Cancellation changes the appointment status, retains its history and rejects repeated cancellation. |
+| Test-F11 | Retrieve an appointment by ID. | AC-06.1 — known appointment lookup succeeds. | test_services.py / appointment lookup test — confirm function name | Pass – An appointment can be retrieved by its ID after successful booking. |
 
 ## G Negative and Boundary Cases
 
@@ -179,12 +179,17 @@ Run python -m pytest from project/. Retain all accumulated tests. Record the tes
 
 | Command | Working directory | Code SHA | Passed | Failed | Failure summary | Product defect / test defect / unresolved | Evidence and interpretation |
 |---|---|---|---|---|---|---|---|
-| pytest| st1-assignment-3/stage07/project | 4e94723e7f2a27c0a9474c4b9bad53fc15a28b4d | Passed | 
+| pytest | st1-assignment-3/stage07/project | 4e94723e7f2a27c0a9474c4b9bad53fc15a28b4d | Passed | 
 
-Individual test runs and changed-order independence evidence: [commands, results, links]
+Individual test runs and changed-order independence evidence: 
+- python -m pytest tests/test_domain.py -v
+- python -m pytest tests/test_services.py -v
+- python -m pytest tests/test_queries.py -v
+- python -m pytest tests/test_workflows.py -v
+- python -m pytest -q
 Optional tutor-led demonstration notes: [optional; leave blank if not used]
 A meaningful test should detect a relevant incorrect result. Students do not have to perform the demonstration or submit failure/restoration evidence for assessment. The tutor restores the example and reruns its tests. This is not a Stage 8 fault activity.
-Requirement → test → failure/observation → diagnosis → change → verification: [concise links where applicable]
+Requirement → test → failure/observation → diagnosis → change → verification: Requirements traceability, tests/test_domain.py, tests/test_services.py, tests/test_queries.py, tests/test_workflows.py, Git commit history and pytest results.
 
 ## K What the Suite Still Does Not Prove
 

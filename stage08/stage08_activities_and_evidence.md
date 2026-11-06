@@ -129,7 +129,7 @@ Register a patient and practitioner.
 Book appointment A1.
 Call cancel_appointment('A1').
 Check the appointment status and whether it remains accessible through find_appointment('A1').
-- Meaningful failing test path/name and exact relevant failure: [complete]
+- Meaningful failing test path/name and exact relevant failure: (https://github.com/nleljak/st1-assignment-3/tree/debug/stage08)
 - Human hypothesis and intended checks: see E, F8-01.
 - Supported root cause and inspected code/runtime evidence: In the previously supplied services.py, AppointmentService.cancel_appointment() contained a NotImplementedError rather than delegating cancellation to the domain object. The supplied Appointment.cancel() method already implemented the status transition and rejected invalid cancellation attempts. The data store retained appointments in its _appointments dictionary, and there was no public deletion operation.
 - Smallest justified fix / diff / why other behaviour is preserved: Replace the incomplete service method with a lookup of the existing appointment, call its domain-level cancel() method, and return the cancelled appointment.
@@ -295,7 +295,7 @@ Verified integrated code SHA / result: e2c34af8f40f9f27523a58115bc77607d917b282
 Submitted SHA and evidence-only difference if any: e2c34af8f40f9f27523a58115bc77607d917b282
 Unresolved issues or incomplete checks / owner / next action: Two issues were identified in the SmartCare appointment functionality. Firstly, find_appointment() excludes appointments with CANCELLED status, meaning cancelled appointment history cannot be retrieved through the individual appointment lookup function. Secondly, has_practitioner_conflict() uses an incorrect comparison operator when checking practitioner IDs, potentially allowing conflicting appointments to be booked.
 
-Kynan is responsible for investigating both issues. The next action is to compare the prepared Stage 8 code against the Stage 7 baseline, identify the cause of each issue, implement the necessary corrections and run focused tests followed by the full test suite.
+Nikola is responsible for investigating both issues. The next action is to compare the prepared Stage 8 code against the Stage 7 baseline, identify the cause of each issue, implement the necessary corrections and run focused tests followed by the full test suite.
 Handover note: The Stage 8 prepared code has been reviewed and potential defects have been identified in appointment retrieval and practitioner conflict checking. The cancelled-history issue involves find_appointment() excluding cancelled records, while the booking conflict issue involves an incorrect practitioner ID comparison in has_practitioner_conflict().
 
 The next developer should investigate these methods before making changes, preserve the original debugging hypotheses and use the relevant acceptance criteria to justify the expected behaviour. After corrections, focused tests and the full regression test suite should be completed to confirm that appointment history is retained and practitioner scheduling conflicts are correctly prevented.

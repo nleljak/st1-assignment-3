@@ -4,7 +4,7 @@ Common UG and PG record. All Assignment 3 stage materials are provided from the 
 
 Group: Online group 2
 Members and responsibilities: Kynan and Nikola, both have the same responsibilities
-Stage 8 integrated SHA, command, working directory and actual result: <!-- complete -->
+Stage 8 integrated SHA, command, working directory and actual result: https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries
 
 ## A. Tutorial activities
 
@@ -77,14 +77,14 @@ Cover QRY-01–04, FP-01–03, UI-01–02 and relevant FR-01–09. Explain empty
 
 | Requirement / test ID | Code location | Case and meaningful assertion | Actual result | Evidence link |
 |---|---|---|---|---|
-| QRY-01 | smartcare/queries.py | Practitioner isolation: appointments belonging to the requested practitioner are returned, while appointments belonging to other practitioners are excluded. | | |
-| QRY-02 | smartcare/queries.py | Status filtering: each AppointmentStatus value returns only appointments with the matching status. A None status returns appointments of all statuses. | | |
-| QRY-03 | smartcare/queries.py | Equal-time sorting: appointments with identical date/time values are ordered by appointment ID. | | |
-| FP-01 | smartcare/queries.py | Repeated calls using the same input produce consistent results without changing the supplied appointments. | | |
-| FP-02 | smartcare/queries.py  | Empty and already-sorted lists are handled correctly. The returned list is a new list and the original source order and appointment fields remain unchanged. | | |
-| FP-03 | smartcare/queries.py  | The named appointment_sort_key() function is reused for sorting, keeping the sorting logic consistent and avoiding duplicated logic. | | |
-| QRY-01 | smartcare/queries.py  | A known practitioner with no appointments returns an empty list. An unknown practitioner and an invalid status are rejected appropriately. | | |
-| HIST-01 | tests/test_workflows.py  | A cancelled appointment remains retrievable and appears in an unfiltered practitioner listing, but is excluded from a scheduled-only listing. | | |
+| QRY-01 | smartcare/queries.py | Practitioner isolation: appointments belonging to the requested practitioner are returned, while appointments belonging to other practitioners are excluded. | Pass – Only appointments belonging to the requested practitioner were returned. Appointments belonging to other practitioners were excluded. | tests/test_queries.py – practitioner isolation test |
+| QRY-02 | smartcare/queries.py | Status filtering: each AppointmentStatus value returns only appointments with the matching status. A None status returns appointments of all statuses. | Pass – All AppointmentStatus values returned only matching appointments. Passing None returned appointments of all statuses. | tests/test_queries.py – status filtering tests |
+| QRY-03 | smartcare/queries.py | Equal-time sorting: appointments with identical date/time values are ordered by appointment ID. | Pass – Appointments with identical date/time values were sorted by appointment ID in the expected order. | tests/test_queries.py – equal-time sorting test |
+| FP-01 | smartcare/queries.py | Repeated calls using the same input produce consistent results without changing the supplied appointments. | Pass – Repeated calls with identical inputs produced consistent results without modifying the original appointments. | tests/test_queries.py – repeatability/non-mutation test |
+| FP-02 | smartcare/queries.py  | Empty and already-sorted lists are handled correctly. The returned list is a new list and the original source order and appointment fields remain unchanged. | Pass – Empty and already-sorted inputs were handled correctly. A new list was returned, and the original list and appointment fields remained unchanged. | tests/test_queries.py – empty list and non-mutation tests |
+| FP-03 | smartcare/queries.py  | The named appointment_sort_key() function is reused for sorting, keeping the sorting logic consistent and avoiding duplicated logic. | Pass – appointment_sort_key() was reused by the sorting function, avoiding duplicated sorting logic. | smartcare/queries.py – appointment_sort_key() and select_appointments() |
+| QRY-01 | smartcare/queries.py  | A known practitioner with no appointments returns an empty list. An unknown practitioner and an invalid status are rejected appropriately. | Pass – A known practitioner with no appointments returned an empty list. Unknown practitioners and invalid statuses were rejected appropriately. | tests/test_queries.py / tests/test_workflows.py – validation tests |
+| HIST-01 | tests/test_workflows.py  | A cancelled appointment remains retrievable and appears in an unfiltered practitioner listing, but is excluded from a scheduled-only listing. | Pass – Cancelled appointments remained retrievable and appeared in unfiltered practitioner listings but were excluded from scheduled-only listings. | tests/test_workflows.py – cancellation history test |
 
 Include practitioner isolation, every enum status/default all, equal-time ID tie-break, named-key reuse, repeated calls, empty/already-sorted fresh lists, unchanged source order/fields, known-empty/unknown/invalid service cases and retained history.
 
@@ -94,9 +94,9 @@ Purity explanation from code inspection, including absence of hidden state and I
 
 | Scenario / acceptance ID | Reproducible inputs / artefact | Expected result | Observed result and state check | Evidence link |
 |---|---|---|---|---|
-| UI-01 full menu workflow | Register P1, D1 and D2; book A1 and A2; attempt a practitioner conflict; cancel and retrieve A1; list appointments; book into the freed slot; exit. | Successful registration and booking, rejection of the practitioner conflict, successful cancellation, retained appointment history, correct filtered listings and successful reuse of the freed slot. | | |
-| UI-02 invalid-input recovery | Duplicate and unknown IDs, blank IDs, malformed and impossible dates, invalid status, unknown menu choice and repeated cancellation. | Invalid operations are rejected with appropriate messages. The application remains usable and invalid operations do not corrupt existing records. | | |
-| Automated service workflow | Automated tests in tests/test_workflows.py. | Registration, booking, conflict checking, cancellation, retrieval and practitioner listing work together correctly. | | |
+| UI-01 full menu workflow | Register P1, D1 and D2; book A1 and A2; attempt a practitioner conflict; cancel and retrieve A1; list appointments; book into the freed slot; exit. | Successful registration and booking, rejection of the practitioner conflict, successful cancellation, retained appointment history, correct filtered listings and successful reuse of the freed slot. | Pass – Registration and booking completed successfully. The practitioner conflict was rejected. Appointment A1 was cancelled but remained retrievable in appointment history. Listings displayed the correct appointments, and the freed time slot was successfully reused. | tests/test_workflows.py; manual application run |
+| UI-02 invalid-input recovery | Duplicate and unknown IDs, blank IDs, malformed and impossible dates, invalid status, unknown menu choice and repeated cancellation. | Invalid operations are rejected with appropriate messages. The application remains usable and invalid operations do not corrupt existing records. | Pass – Duplicate and unknown IDs, blank IDs, invalid dates, invalid statuses, unknown menu choices and repeated cancellation were rejected appropriately. The application remained operational and existing records were preserved. | Manual application run |
+| Automated service workflow | Automated tests in tests/test_workflows.py. | Registration, booking, conflict checking, cancellation, retrieval and practitioner listing work together correctly. | Pass – Automated workflow tests confirmed that registration, booking, conflict checking, cancellation, retrieval and practitioner listing worked together correctly. | tests/test_workflows.py |
 
 Include registration/find, booking, conflict rejection, different-practitioner booking, cancellation, retrieval, listing/filtering, freed slot and exit; duplicate/unknown/blank IDs, malformed/impossible date, invalid status, unknown choice and repeated cancellation. Identify before/after state and subsequent successful action.
 
@@ -178,22 +178,23 @@ Responsibility check: explain how domain invariants, shared-store collections, s
 
 ## H. Review, completion and common handover
 
-Issues and bounded branches: <!-- links -->
-PR/diff and another-member human reviewer: <!-- actual links/name -->
-Review responses and Copilot comparison: <!-- links -->
-Integrated common Stage 9 SHA: <!-- complete -->
-Full regression command, working directory, actual count/result and evidence: <!-- complete -->
-README run instructions and scope/limitations: <!-- link -->
-Unresolved issues and support/action: <!-- complete -->
-UG common candidate / PG future branch plan: <!-- complete -->
+Issues and bounded branches: (https://github.com/nleljak/st1-assignment-3/tree/debug/stage08)
+PR/diff and another-member human reviewer: Nikola; https://github.com/nleljak/st1-assignment-3/tree/debug/stage08
+Review responses and Copilot comparison: Copilot not used
+Integrated common Stage 9 SHA: (https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries)
+Full regression command, working directory, actual count/result and evidence: (https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries)
+README run instructions and scope/limitations: (https://github.com/nleljak/st1-assignment-3/tree/feature/stage9-queries)
+Unresolved issues and support/action: The main known limitation is the use of in-memory storage rather than persistent database storage. This means patient, practitioner and appointment records are lost when the application session ends. Future work could include PostgreSQL integration, improved security and persistent record management. Any additional unresolved defects should be documented with an assigned owner and next action.
+Owner: Nikola
+UG common candidate / PG future branch plan: The common undergraduate implementation is maintained as the integrated candidate containing the completed common functionality and associated regression tests.
 
-- [ ] Query contracts, purity, new lists and named-key ordering verified.
-- [ ] Service empty/unknown/invalid cases and cancellation history verified.
-- [ ] Every console command and invalid-input recovery demonstrated.
-- [ ] Query and workflow tests plus all previous tests pass; actual evidence linked.
-- [ ] Human design, Copilot critique, review and integration recorded honestly.
-- [ ] Reflections and ten formative responses completed.
-- [ ] README updated; earlier code/tests/records preserved.
-- [ ] Common SHA protected for UG Stage 12; PG Stage 10/11 work deferred until approved.
+- [x] Query contracts, purity, new lists and named-key ordering verified.
+- [x] Service empty/unknown/invalid cases and cancellation history verified.
+- [x] Every console command and invalid-input recovery demonstrated.
+- [x] Query and workflow tests plus all previous tests pass; actual evidence linked.
+- [x] Human design, Copilot critique, review and integration recorded honestly.
+- [x] Reflections and ten formative responses completed.
+- [x] README updated; earlier code/tests/records preserved.
+- [x] Common SHA protected for UG Stage 12; PG Stage 10/11 work deferred until approved.
 
 No persistence, rescheduling or assurance implementation is part of Stage 9. UG: 6→7→8→9→12. PG: 6→7→8→9→10→11→12. Mixed groups keep one repository and protect the common candidate.
