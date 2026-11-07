@@ -130,8 +130,8 @@ class AppointmentService:
         appointment.
 
         Return the cancelled object. Unknown IDs raise LookupError;
-        invalid transitions raise ValueError and leave state unchanged.
-        """
+        invalid transitions raise ValueError and leave state unchanged."""
+        
         appointment = self.find_appointment(appointment_id)
         appointment.cancel()
         return appointment
@@ -145,6 +145,23 @@ class AppointmentService:
 
         Unknown practitioner raises LookupError, invalid status
         ValueError; a known practitioner with no matches returns an
-        empty list.
-        """
-        raise NotImplementedError('Stage 9: practitioner appointments')
+        empty list."""
+        
+                if not isinstance(practitioner_id, str) or not practitioner_id.strip():
+            raise ValueError('Practitioner ID cannot be blank')
+
+        practitioner = self.data_store.find_practitioner(practitioner_id)
+
+        if practitioner is None:
+            raise LookupError('Practitioner not found')
+
+        if status is not None and not isinstance(status, AppointmentStatus):
+            raise ValueError('Invalid appointment status')
+
+        appointments = self.data_store.list_appointments()
+
+        return select_appointments(
+            appointments,
+            practitioner_id=practitioner_id,
+            status=status,
+        )
