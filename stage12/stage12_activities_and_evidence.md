@@ -186,7 +186,7 @@ Common decision / PG decision where different: READY WITH DOCUMENTED LIMITATIONS
 
 ## K Final tested release SHA
 
-Exact common tested SHA: 074f45c756abb99d2a6126817aba142497b356a5
+Exact common tested SHA: 7970ea4bddd32693c5b8f266890ee3bef746d49d
 Exact PG tested SHA or not applicable: N/A
 Final submitted SHA / repository URL: https://github.com/nleljak/st1-assignment-3
 Evidence-only later commit and difference explanation: N/A
